@@ -1,5 +1,5 @@
 <?php
-require_once("php/web.class.php");
+require_once("php/web_class.php");
 
 $web = new Web("E-commerce");
 
