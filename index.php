@@ -1,15 +1,16 @@
 <?php
 require_once("php/web_class.php");
 
-$web = new Web("E-commerce");
+$web = new Web("SEAmail - Accueil");
 
-$web->addCSSlink("css/style.css");
-$web->addIcon("https://samsam.go.yo.fr/avatar.png");
+$web->addIcon("img/logo_court_couleur.png");
+
+$web->addNavBar();
+
+$web->addJSlink("https://kit.fontawesome.com/602d3eba54.js");
+$web->addJSlink("https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js");
+
 $web->addToBody(<<<HTML
-
-<a class="button is-link">
-    START
-</a>
 
 HTML);
 
