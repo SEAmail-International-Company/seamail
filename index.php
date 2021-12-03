@@ -1,17 +1,12 @@
 <?php
 require_once("php/web_class.php");
 
+if(isset($_COOKIE["theme"])) $theme = $_COOKIE["theme"];
+else $theme = "dark";
+
 $web = new Web("SEAmail - Accueil");
+$web->addNavBar($theme);
 
-$web->addIcon("img/logo_court_couleur.png");
+$web->addSection("Accueil", "Bienvenue sur la page d'acceuil du site de SEAmail.");
 
-$web->addNavBar();
-
-$web->addJSlink("https://kit.fontawesome.com/602d3eba54.js");
-$web->addJSlink("https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js");
-
-$web->addToBody(<<<HTML
-
-HTML);
-
-echo $web->toHTML();
+echo $web->toHTML($theme);
