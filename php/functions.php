@@ -14,6 +14,13 @@ function is_correct_password($password){
     return $ERR["password"];
 }
 
+function is_correct_mail($mail){
+    $ERR = [];
+    $ERR["mail"] = filter_var($mail, FILTER_VALIDATE_EMAIL) ? 0 : -5;
+
+    return $ERR["mail"];
+}
+
 function are_all_input_correct($array){
     if (array_sum($array) == 0) return true;
     else return false;

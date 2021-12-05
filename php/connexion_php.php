@@ -14,15 +14,16 @@ $success = false;
 $ERR["username"] = is_empty("username");
 $ERR["password"] = is_empty("password");
 
+$username = htmlspecialchars($_POST["username"]);
+$password = htmlspecialchars($_POST["password"]);
+
+if(is_input_correct("password", $ERR)){
+    $ERR["password"] = is_correct_password($password);
+}
+
 if (are_all_input_correct($ERR)) {
 
-    $username = htmlspecialchars($_POST["username"]);
-    $password = htmlspecialchars($_POST["password"]);
-
-    $ERR["password"] = is_correct_password($password) ? 0 : -2;
-    
-    if(is_input_correct($password, $ERR)) $success = true;
-    else $success = false;
+    $success = true;
 }
 
 $msg_username = $ERR_DEFINE[$ERR["username"]];
