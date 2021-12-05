@@ -143,7 +143,7 @@ class Web{
                 {$add_on}
                 <link rel="icon" type="image/png" href="img/logo_court_{$logo}.png">
                 <script src="https://kit.fontawesome.com/602d3eba54.js"></script>
-                <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+                <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
             </head>
             <body>
                 {$this->getBody()}
