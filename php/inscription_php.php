@@ -11,9 +11,9 @@ $ERR_DEFINE[-3] = "Ce nom d'utilisateur ne correspond à aucun compte existant."
 $ERR_DEFINE[-4] = "Ce mot de passe ne correspond pas au compte de l'utilisateur.";
 $success = false;
 
-$ERR["username"] = !empty($_POST["username"]) ? 0 : -1;
-$ERR["password"] = !empty($_POST["password"]) ? 0 : -1;
-$ERR["mail"] = !empty($_POST["mail"]) ? 0 : -1;
+$ERR["username"] = is_empty("username");
+$ERR["password"] = is_empty("password");
+$ERR["mail"] = is_empty("mail");
 
 if (are_all_input_correct($ERR)) {
 
