@@ -25,7 +25,7 @@ $web->addToBody(<<<HTML
         </div>
         <div class="field">
             <label class="label">Mot de passe</label>
-            <p class="control has-icons-left is-expanded has-addons">
+            <p class="control has-icons-left is-expanded">
                 <input class="input" id="password" name="password" type="password" placeholder="Mot de passe">
                 <span class="icon is-small is-left">
                     <i class="fas fa-lock"></i>
