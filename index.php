@@ -7,6 +7,6 @@ else $theme = "dark";
 $web = new Web("SEAmail - Accueil");
 $web->addNavBar($theme);
 
-$web->addSection("Accueil", "Bienvenue sur la page d'acceuil du site de SEAmail.");
+$web->addSection("Accueil", "Bienvenue sur la page d'accueil du site de SEAmail.");
 
 echo $web->toHTML($theme);
