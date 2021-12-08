@@ -17,6 +17,7 @@ if(is_input_correct("mail", $ERR)) $ERR["mail"] = is_correct_mail($mail);
 
 if (are_all_input_correct($ERR)) {
 
+    
     $success = true;
 }
 

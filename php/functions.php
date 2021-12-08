@@ -45,3 +45,17 @@ function is_input_correct($value, $array){
     if ($array[$value] == 0) return true;
     else return false;
 }
+
+function is_username_available($username){
+    $username_verify = sendQuery("SELECT * FROM users WHERE username = '$username'");
+
+    if ($username_verify->rowCount() == 0) return true;
+    else return false;
+}
+
+function is_mail_available($mail){
+    $mail_verify = sendQuery("SELECT * FROM users WHERE mail = '$mail'");
+
+    if ($mail_verify->rowCount() == 0) return true;
+    else return false;
+}

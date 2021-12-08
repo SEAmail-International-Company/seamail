@@ -1,6 +1,6 @@
 <?php
 require_once("php/web_class.php");
-require_once("functions.php");
+require_once("php/functions.php");
 
 $web = new Web("SEAmail - Inscription");
 $web->addNavBar($theme);
