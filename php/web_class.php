@@ -1,4 +1,6 @@
 <?php
+if(isset($_COOKIE["theme"])) $theme = $_COOKIE["theme"];
+else $theme = "dark";
 
 class Web{
     private $head;
@@ -58,6 +60,29 @@ class Web{
         HTML);
     }
 
+    public function addMessage(string $picture, string $author, string $message, string $hour){
+        return (<<<HTML
+        <article class="media">
+            <figure class="media-left">
+            <p class="image is-64x64">
+                <img src="{$picture}">
+            </p>
+            </figure>
+            <div class="media-content">
+                <div class="content">
+                    <p>
+                    <strong>{$author}</strong>
+                    <br>
+                    {$message}
+                    <br>
+                    <small><a>J'aime</a> · <a>Répondre</a> · {$hour}</small>
+                    </p>
+                </div>
+            </div>
+        </article>
+        HTML);
+    }
+
     public function addNavBar(string $color = "dark") : void{
         if($color == "dark"){
             $logo = "blanc";
@@ -112,7 +137,14 @@ class Web{
                         <span class="icon">
                             <i class="fas fa-code-branch"></i>
                         </span>
-                        <span>Version de build 1.0.0[R]</span>
+                        <span>
+                        <div class="control">
+                            <div class="tags has-addons">
+                            <span class="tag is-dark">Build</span>
+                            <span class="tag is-info">v1.0.0R</span>
+                            </div>
+                        </div>
+                        </span>
                     </span>
                 </a>
             </div>
@@ -139,13 +171,12 @@ class Web{
                 <meta http-equiv="X-UA-Compatible" content="IE=edge">
                 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
                 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
-                <link rel="stylesheet" href="css/style.css">
                 {$add_on}
                 <link rel="icon" type="image/png" href="img/logo_court_{$logo}.png">
                 <script src="https://kit.fontawesome.com/602d3eba54.js"></script>
                 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
             </head>
-            <body>
+            <body class="has-navbar-fixed-bottom">
                 {$this->getBody()}
             </body>
         </html>

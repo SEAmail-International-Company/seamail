@@ -1,9 +1,6 @@
 <?php
 require_once("php/web_class.php");
 
-if(isset($_COOKIE["theme"])) $theme = $_COOKIE["theme"];
-else $theme = "dark";
-
 $web = new Web("SEAmail - Connexion");
 $web->addNavBar($theme);
 $web->addSection("Formulaire de connexion", "Veuillez compléter le formulaire ci-dessous pour vous connecter à votre compte SEAmail.");

@@ -1,8 +1,6 @@
 <?php
 require_once("php/web_class.php");
-
-if(isset($_COOKIE["theme"])) $theme = $_COOKIE["theme"];
-else $theme = "dark";
+require_once("functions.php");
 
 $web = new Web("SEAmail - Accueil");
 $web->addNavBar($theme);

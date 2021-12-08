@@ -1,6 +1,5 @@
 <?php
-
-include_once("variables.php");
+require_once("variables.php");
 require_once("functions.php");
 
 $ERR["username"] = is_empty("username");
@@ -12,13 +11,9 @@ $password = htmlspecialchars($_POST["password"]);
 $mail = htmlspecialchars($_POST["mail"]);
 $mail = filter_var($mail, FILTER_SANITIZE_EMAIL);
 
-if(is_input_correct("password", $ERR)){
-    $ERR["password"] = is_correct_password($password);
-}
+if(is_input_correct("password", $ERR)) $ERR["password"] = is_correct_password($password);
 
-if(is_input_correct("mail", $ERR)){
-    $ERR["mail"] = is_correct_mail($mail);
-}
+if(is_input_correct("mail", $ERR)) $ERR["mail"] = is_correct_mail($mail);
 
 if (are_all_input_correct($ERR)) {
 

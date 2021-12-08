@@ -1,7 +1,6 @@
 <?php
-
-include_once("variables.php");
 require_once("functions.php");
+require_once("variables.php");
 
 $ERR["username"] = is_empty("username");
 $ERR["password"] = is_empty("password");
@@ -9,9 +8,7 @@ $ERR["password"] = is_empty("password");
 $username = htmlspecialchars($_POST["username"]);
 $password = htmlspecialchars($_POST["password"]);
 
-if(is_input_correct("password", $ERR)){
-    $ERR["password"] = is_correct_password($password);
-}
+if(is_input_correct("password", $ERR)) $ERR["password"] = is_correct_password($password);
 
 if (are_all_input_correct($ERR)) {
 

@@ -1,4 +1,19 @@
 <?php
+require_once("connect_database.php");
+
+function sendQuery($query){
+
+	global $db;
+
+	$req = $db->query($query);
+
+	if ($req){
+		return $req;
+	}else{
+		return false;
+	}
+
+}
 
 function is_empty($var){
     $ERR = [];
