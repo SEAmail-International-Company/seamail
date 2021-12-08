@@ -58,7 +58,7 @@ $web->addToBody(<<<HTML
 </div>  
 
 <script>
-    verifForm(["username", "password", "mail"], "index.php", "php/inscription_php.php");
+    verifForm(["username", "password", "mail"], "connexion.php", "php/inscription_php.php");
 </script>
 HTML);
 

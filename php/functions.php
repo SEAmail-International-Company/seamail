@@ -97,7 +97,7 @@ function is_mail_available($mail){
     return $ERR["mail"];
 }
 
-function add_new_user($username, $mail, $score, $rang, $password, $date_creation_compte){
+function add_new_user($username, $mail, $score, $rang, $password, $date_creation_compte, $profile_picture){
     $password = hash("sha256", $password);
-    sendQuery("INSERT INTO users (username, mail, score, rang, password, date_creation_compte) VALUES ('$username', '$mail', '$score', '$rang', '$password', '$date_creation_compte')");
+    sendQuery("INSERT INTO users (username, profile_picture, mail, score, rang, password, date_creation_compte) VALUES ('$username', '$profile_picture', '$mail', '$score', '$rang', '$password', '$date_creation_compte')");
 }

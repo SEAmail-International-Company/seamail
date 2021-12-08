@@ -22,8 +22,9 @@ if (are_all_input_correct($ERR)) {
     $score = 0;
     $rang = "user";
     $date_creation_compte = date("Y-m-d H:i:s");
+    $profile_picture = "img/profiles/default.png";
 
-    add_new_user($username, $mail, $score, $rang, $password, $date_creation_compte);
+    add_new_user($username, $mail, $score, $rang, $password, $date_creation_compte, $profile_picture);
     $success = true;
 }
 

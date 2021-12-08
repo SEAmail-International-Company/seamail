@@ -2,6 +2,8 @@
 require_once("php/web_class.php");
 require_once("php/functions.php");
 
+if(isset($_SESSION["username"]) && !empty($_SESSION["username"])){
+
 $web = new Web("SEAmail - Espace membre");
 $web->addToBody(<<<HTML
 <div class="tile is-ancestor">
@@ -74,3 +76,7 @@ $web->addToBody(<<<HTML
 HTML);
 
 echo $web->toHTML($theme);
+
+}else{
+  header("location:index.php");
+}

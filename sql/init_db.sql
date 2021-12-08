@@ -5,6 +5,7 @@ USE seamail;
 CREATE TABLE users (
   id_user INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
   username VARCHAR(128),
+  profile_picture VARCHAR(255),
   mail VARCHAR(128),
   score INT UNSIGNED,
   rang VARCHAR(128),
