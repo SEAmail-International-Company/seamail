@@ -49,13 +49,55 @@ function is_input_correct($value, $array){
 function is_username_available($username){
     $username_verify = sendQuery("SELECT * FROM users WHERE username = '$username'");
 
-    if ($username_verify->rowCount() == 0) return true;
-    else return false;
+    $ERR = [];
+    $ERR["username"] = $username_verify->rowCount() == 0 ? 0 : -6;
+
+    return $ERR["username"];
+}
+
+function is_username_exist($username){
+    $req = sendQuery("SELECT * FROM users WHERE username = '$username'");
+
+    $ERR = [];
+    $ERR["username"] = $req->rowCount() != 0 ? 0 : -3;
+
+    return $ERR["username"];
+}
+
+function setUserVar($username){
+    $req = sendQuery("SELECT * FROM users WHERE username = '$username'");
+
+    $req = $req->fetch();
+
+    $_SESSION["username"] = $username;
+    $_SESSION["id"] = $req["id_user"];
+    $_SESSION["mail"] = $req["mail"];
+    $_SESSION["score"] = $req["score"];
+    $_SESSION["rang"] = $req["rang"];
+}
+
+function is_password_match($username, $password){
+    $req = sendQuery("SELECT * FROM users WHERE username = '$username'");
+
+    $req = $req->fetch();
+	$password = hash("sha256", $password);
+
+    $ERR = [];
+    $ERR["password"] = ($password == $req["password"]) ? 0 : -4;
+
+    return $ERR["password"];
 }
 
 function is_mail_available($mail){
-    $mail_verify = sendQuery("SELECT * FROM users WHERE mail = '$mail'");
+    $req = sendQuery("SELECT * FROM users WHERE mail = '$mail'");
 
-    if ($mail_verify->rowCount() == 0) return true;
-    else return false;
+    $ERR = [];
+    $ERR["mail"] = $req->rowCount() == 0 ? 0 : -7;
+
+    return $ERR["mail"];
+}
+
+function add_new_user($username, $mail, $score, $rang, $password, $date_creation_compte){
+    $password = hash("sha256", $password);
+    sendQuery("INSERT INTO users (username, mail, score, rang, password, date_creation_compte) VALUES ('$username', '$mail', '$score', '$rang', '$password', '$date_creation_compte')");
 }
