@@ -9,28 +9,21 @@ $web->addToBody(<<<HTML
 <div class="tile is-ancestor">
   <div class="tile is-4 is-vertical is-parent">
     <div class="tile is-child box">
-      <p class="title">Menu</p>
+      <p class="title">Bienvenue {$_SESSION["username"]} !</p>
       <p class="menu-label">
-        General
+        Général
       </p>
       <ul class="menu-list">
-        <li><a>Dashboard</a></li>
-        <li><a>Customers</a></li>
+        <li><a href="index.php">Accueil</a></li>
+        <li><a href="deconnexion.php">Déconnexion</a></li>
       </ul>
       <p class="menu-label">
-        Administration
+        Paramètres
       </p>
       <ul class="menu-list">
         <li>
-          <a>Team Settings</a>
-        </li>
-        <li>
-          <a class="is-active">Manage Your Team</a>
-          <ul>
-            <li><a>Members</a></li>
-            <li><a>Plugins</a></li>
-            <li><a>Add a member</a></li>
-          </ul>
+          <a>Modifier mon compte</a>
+          <a href="php/change_theme.php?retour={$_SERVER['REQUEST_URI']}">Changer le thème</a>
         </li>
       </ul>
     </div>
@@ -38,6 +31,7 @@ $web->addToBody(<<<HTML
 
   <div class="tile is-vertical is-parent">
     <div class="tile is-child box">
+      <p class="title">Chat général</p>
       {$web->addMessage("img/logo_court_blanc.png", "Jean Valjean", "Coucou", "12:32")}
     </div>
   </div>

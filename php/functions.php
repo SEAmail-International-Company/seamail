@@ -74,6 +74,7 @@ function setUserVar($username){
     $_SESSION["mail"] = $req["mail"];
     $_SESSION["score"] = $req["score"];
     $_SESSION["rang"] = $req["rang"];
+    $_SESSION["profile_picture"] = $req["profile_picture"];
 }
 
 function is_password_match($username, $password){
