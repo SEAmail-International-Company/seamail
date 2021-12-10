@@ -11,4 +11,6 @@ unset($_SESSION["profile_picture"]);
 
 session_destroy();
 
-header("Location:index.php?action=deconnexion");
+setcookie("notification", "deconnexion", strtotime('+30 days'), "/", "localhost", false, false);
+
+header("Location:index.php");

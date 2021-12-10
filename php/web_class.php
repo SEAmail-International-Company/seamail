@@ -60,6 +60,26 @@ class Web{
         HTML);
     }
 
+    public function addCookieNotif(string $notification){
+        $this->addToBody(<<<HTML
+        <nav class="navbar is-fixed-bottom">
+          <div class="navbar-end">
+            <p>
+            {$notification}
+            </p>
+          </div>
+        </nav>
+        <script>
+            setTimeout(function() {
+                $(".notification").fadeOut(400);
+            }, 2000);
+            $(".delete").click(function() {
+                $(".notification").fadeOut(400);
+            });
+        </script>
+        HTML);
+    }
+
     public function addMessage(string $picture, string $author, string $message, string $hour){
         return (<<<HTML
         <article class="media">
@@ -141,7 +161,7 @@ class Web{
                         <div class="control">
                             <div class="tags has-addons">
                             <span class="tag is-dark">Build</span>
-                            <span class="tag is-info">v1.0.0R</span>
+                            <span class="tag is-info">v1.3.0R</span>
                             </div>
                         </div>
                         </span>

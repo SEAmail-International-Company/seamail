@@ -2,6 +2,9 @@
 require_once("php/web_class.php");
 require_once("php/functions.php");
 
+if(isset($_SESSION["username"]) && !empty($_SESSION["username"])) header("Location:espace_membre.php");
+else{
+
 $web = new Web("SEAmail - Connexion");
 $web->addNavBar($theme);
 $web->addSection("Formulaire de connexion", "Veuillez compléter le formulaire ci-dessous pour vous connecter à votre compte SEAmail.");
@@ -51,3 +54,4 @@ $web->addToBody(<<<HTML
 HTML);
 
 echo $web->toHTML($theme);
+}

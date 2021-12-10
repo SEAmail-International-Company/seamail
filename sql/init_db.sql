@@ -35,3 +35,25 @@ CREATE TABLE messages (
   FOREIGN KEY (id_piece_jointe)
   REFERENCES piecesjointes(id_piece_jointe) ON DELETE CASCADE ON UPDATE CASCADE)
   ENGINE InnoDB CHARSET utf8mb4;
+
+  CREATE TABLE salons (
+    id_salon INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    nom_salon VARCHAR(255),
+    date_creation_salon TIMESTAMP,
+    icone_salon VARCHAR(255),
+    createur_salon INT UNSIGNED NOT NULL,
+    CONSTRAINT fk_createur_salon
+    FOREIGN KEY (createur_salon)
+    REFERENCES users(id_user) ON DELETE CASCADE ON UPDATE CASCADE)
+    ENGINE InnoDB CHARSET utf8mb4;
+
+  CREATE TABLE membres_salons (
+    id_salon INT UNSIGNED NOT NULL,
+    id_membre INT UNSIGNED NOT NULL,
+    CONSTRAINT fk_id_membre
+    FOREIGN KEY (id_membre)
+    REFERENCES users(id_user) ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT fk_id_salon
+    FOREIGN KEY (id_salon)
+    REFERENCES salons(id_salon) ON DELETE CASCADE ON UPDATE CASCADE)
+    ENGINE InnoDB CHARSET utf8mb4;
