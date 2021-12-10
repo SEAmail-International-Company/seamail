@@ -186,7 +186,7 @@ class Web{
                         <div class="control">
                             <div class="tags has-addons">
                             <span class="tag is-dark">Build</span>
-                            <span class="tag is-info">v1.3.0R</span>
+                            <span class="tag is-info">v1.5.0R</span>
                             </div>
                         </div>
                         </span>
