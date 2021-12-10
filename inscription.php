@@ -10,10 +10,11 @@ $web->addNavBar($theme);
 $web->addSection("Formulaire de création de compte", "");
 $web->addJSlink("js/changeInputStatus.js");
 $web->addJSlink("js/verifForm.js");
+$web->addLoader($theme);
 
 $web->addToBody(<<<HTML
 <div class="container is-fluid">
-    <form method="POST">
+    <form method="POST" id="registerForm">
         <div class="field">
             <label class="label">Nom d'utilisateur</label>
             <p class="control has-icons-left is-expanded">
@@ -61,7 +62,9 @@ $web->addToBody(<<<HTML
 </div>  
 
 <script>
-    verifForm(["username", "password", "mail"], "connexion.php", "php/inscription_php.php");
+    $(window).ready(function() {        
+        verifForm(["username", "password", "mail"], "connexion.php", "php/inscription_php.php");
+     });
 </script>
 HTML);
 

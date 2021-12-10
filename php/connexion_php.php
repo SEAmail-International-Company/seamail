@@ -22,5 +22,6 @@ if (are_all_input_correct($ERR)) {
 $msg_username = $ERR_DEFINE[$ERR["username"]];
 $msg_password = $ERR_DEFINE[$ERR["password"]];
 
+
 $response = ["success" => $success, "msg" => ["username" => $msg_username, "password" => $msg_password]];
 echo json_encode($response);

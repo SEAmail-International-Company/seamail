@@ -1,6 +1,7 @@
 <?php
 require_once("php/web_class.php");
 require_once("php/functions.php");
+require_once("cookies.php");
 
 if(isset($_SESSION["username"]) && !empty($_SESSION["username"])) header("Location:espace_membre.php");
 else{
@@ -10,6 +11,8 @@ $web->addNavBar($theme);
 $web->addSection("Formulaire de connexion", "Veuillez compléter le formulaire ci-dessous pour vous connecter à votre compte SEAmail.");
 $web->addJSlink("js/changeInputStatus.js");
 $web->addJSlink("js/verifForm.js");
+$web->addLoader($theme);
+$web->addCookieNotif($notif);
 
 $web->addToBody(<<<HTML
 <div class="container is-fluid">
@@ -49,7 +52,9 @@ $web->addToBody(<<<HTML
 </div> 
 
 <script>
-    verifForm(["username", "password"], "espace_membre.php", "php/connexion_php.php");
+    $(window).ready(function() {    
+        verifForm(["username", "password"], "espace_membre.php", "php/connexion_php.php");
+     });
 </script>
 HTML);
 

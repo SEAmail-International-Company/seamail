@@ -60,6 +60,30 @@ class Web{
         HTML);
     }
 
+    public function addLoader(string $theme){
+        $color_background = $theme == "dark" ? "black" : "white";
+        $this->addToBody(<<<HTML
+            <div id="loader" 
+            style="z-index: 99; position: absolute; top: 0; left: 0; height: 100%; width: 100%; background-color: {$color_background};">
+            <section class="section is-{$theme} is-large">
+                <p class="title is-4">
+                    Chargement en cours...
+                </p><br>
+                <p class="subtitle">
+                    <progress class="progress is-{$theme} is-small" max="100"></progress>
+                </p>
+            </section>
+            </div>
+            <script>
+            $(window).ready(function() {
+                setTimeout(function() {
+                $("#loader").fadeOut("slow");
+                }, 600);       
+            });
+            </script>
+        HTML);
+    }
+
     public function addCookieNotif(string $notification){
         $this->addToBody(<<<HTML
         <nav class="navbar is-fixed-bottom">
@@ -72,9 +96,10 @@ class Web{
         <script>
             setTimeout(function() {
                 $(".notification").fadeOut(400);
-            }, 2000);
+            }, 4000);
             $(".delete").click(function() {
                 $(".notification").fadeOut(400);
+                $(".navbar").css("z-index", 0);
             });
         </script>
         HTML);
