@@ -16,6 +16,7 @@ if(is_input_correct("password", $ERR)) $ERR["password"] = is_password_match($use
 if (are_all_input_correct($ERR)) {
 
     setUserVar($username);
+    setcookie("notification", "connexion", strtotime('+30 days'), "/", "localhost", false, false);
     $success = true;
 }
 

@@ -20,7 +20,9 @@ if (isset($_GET["retour"])){
         setcookie("theme", $new_theme, strtotime('+30 days'), "/", "localhost", false, false);
     }
 
+    setcookie("notification", "change_theme", strtotime('+30 days'), "/", "localhost", false, false);
     header($url_retour);
 }else{
+    setcookie("notification", "interdit", strtotime('+30 days'), "/", "localhost", false, false);
     header('location:index.php');
 }

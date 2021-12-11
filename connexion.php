@@ -3,8 +3,10 @@ require_once("php/web_class.php");
 require_once("php/functions.php");
 require_once("cookies.php");
 
-if(isset($_SESSION["username"]) && !empty($_SESSION["username"])) header("Location:espace_membre.php");
-else{
+if(isset($_SESSION["username"]) && !empty($_SESSION["username"])) {
+    setcookie("notification", "deja_co", strtotime('+30 days'), "/", "localhost", false, false);
+    header("Location:espace_membre.php");
+}else{
 
 $web = new Web("SEAmail - Connexion");
 $web->addNavBar($theme);
@@ -14,40 +16,53 @@ $web->addJSlink("js/verifForm.js");
 $web->addLoader($theme);
 $web->addCookieNotif($notif);
 
+$username_input = new Input();
+$username_input->setBalise("input");
+$username_input->setClass("input");
+$username_input->setName("username");
+$username_input->setId("username");
+$username_input->setType("username");
+$username_input->setPlaceholder("Nom d'utilisateur");
+$username_input->setAutofocus(true);
+$username_input->setHasIconsLeft(true);
+$username_input->setIsExpanded(true);
+$username_input->setIconLeft("user");
+$username_input->setHasHelpbox(true);
+$username = $username_input->createInput();
+
+$password_input = new Input();
+$password_input->setBalise("input");
+$password_input->setClass("input");
+$password_input->setName("password");
+$password_input->setId("password");
+$password_input->setType("password");
+$password_input->setPlaceholder("Mot de passe");
+$password_input->setHasIconsLeft(true);
+$password_input->setIsExpanded(true);
+$password_input->setIconLeft("lock");
+$password_input->setHasHelpbox(true);
+$password_input->setHelpboxContent("Doit contenir plus de 12 caractères parmis lesquels au moins une majuscule, une minuscule, un caractère spécial (!@#$%^&*) et un chiffre.");
+$password = $password_input->createInput();
+
+$submit_input = new Input("input", "", "submit", "connexion", "connexion", "button is-info", "Connexion");
+
+$a_link = new Input("a", "", "", "", "", "button is-info is-outlined", "", "Pas encore membre ?", "inscription.php");
+
+$bottom_field = new Field("", true, false, false, "", [$submit_input->createInput(), $a_link->createInput()]);
+$bottom = $bottom_field->createField();
+
 $web->addToBody(<<<HTML
 <div class="container is-fluid">
     <form method="POST" id="loginForm">
         <div class="field">
             <label class="label">Nom d'utilisateur</label>
-            <p class="control has-icons-left is-expanded">
-                <input class="input" name="username" id="username" type="text" placeholder="Nom d'utilisateur" autofocus>
-                <span class="icon is-small is-left">
-                    <i class="fas fa-user"></i>
-                </span>
-                <p class="help" id="statebox_username"></p>
-            </p>
+            {$username}
         </div>
         <div class="field">
             <label class="label">Mot de passe</label>
-            <p class="control has-icons-left is-expanded">
-                <input class="input" id="password" name="password" type="password" placeholder="Mot de passe">
-                <span class="icon is-small is-left">
-                    <i class="fas fa-lock"></i>
-                </span>
-                <p class="help" id="statebox_password"></p>
-                <p class="help">Doit contenir plus de 12 caractères parmis lesquels au moins une majuscule, une minuscule, un caractère spécial (!@#$%^&*) et un chiffre.</p>
-            </p>
+            {$password}
         </div>
-        <div class="field is-grouped is-grouped-left mt-5">
-            <p class="control">
-                <input class="button is-info" type="submit" value="Connexion">
-            </p>
-            <p class="control">
-                <a class="button is-info is-outlined" href="inscription.php">
-                Pas encore membre ?
-                </a>
-            </p>
-        </div>
+         {$bottom}
     </form> 
 </div> 
 
