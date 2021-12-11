@@ -75,7 +75,7 @@ class Field extends Input{
 
         $field = $this->has_label ? "<label class=\"label\">{$this->label_value}</label>" : "";
 
-        $field .= "<div class=\"field\" {$this->class_field} {$grouped} {$addons}>";
+        $field .= "<div class=\"field {$this->class_field} {$grouped} {$addons}\">";
 
         if(!empty($grouped)){
             for($i = 0; $i < count($this->inputList); $i++){
