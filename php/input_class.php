@@ -207,6 +207,8 @@ class Input{
         $readonly = $this->readonly ? "readonly" : "";
         $value = $this->value != "" ? "value=\"{$this->value}\"" : "";
 
+        $static = $this->is_static ? "is-static" : "";
+
         $icons = $this->has_icons_left ? "<span class='icon is-small is-left'> <i class='fas fa-{$this->icon_left}'></i> </span>" : "";
         $icons .= $this->has_icons_right ? "<span class='icon is-small is-right'> <i class='fas fa-{$this->icon_right}'></i> </span>" : "";
 
@@ -221,20 +223,20 @@ class Input{
 
         switch ($this->balise) {
             case "a":
-                $input .= "<a class='{$this->role} {$this->class}' id='{$this->id}' href=\"{$this->href}\">
+                $input .= "<a class='{$this->role} {$this->class} {$static}' id='{$this->id}' href=\"{$this->href}\">
                             {$this->value}
                           </a>";
                 break;
 
             case "button":
-                $input .= "<button class='{$this->role} {$this->class}' id='{$this->id}' role='{$this->role}'>
+                $input .= "<button class='{$this->role} {$this->class} {$static}' id='{$this->id}' role='{$this->role}'>
                             {$this->value} 
                             {$icons}
                           </button>";
                 break;
             
             default:
-                $input .= "<input class='{$this->class}' type='{$this->type}' id='{$this->id}' name='{$this->name}' {$value} placeholder=\"{$this->placeholder}\" autofocus='{$this->autofocus}' {$readonly}>
+                $input .= "<input class='{$this->class} {$static}' type='{$this->type}' id='{$this->id}' name='{$this->name}' {$value} placeholder=\"{$this->placeholder}\" autofocus='{$this->autofocus}' {$readonly}>
                            {$icons} 
                            {$helpbox}";
                 break;
