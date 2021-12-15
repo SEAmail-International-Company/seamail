@@ -20,11 +20,12 @@ class Input{
     private $icon_right;
     private $has_helpbox;
     private $helpbox_content;
+    private $accepting_files;
 
     public function __construct(string $balise = "input", string $role = "", string $type = "text", string $name = "", string $id = "", 
     string $class = "", string $placeholder = "", string $value = "", string $href = "", bool $autofocus = false,
     bool $readonly = false, bool $is_expanded = false, bool $is_static = false, bool $has_icons_left = false, string $icon_left = "",
-    bool $has_icons_right = false, string $icon_right = "", bool $has_helpbox = false, string $helpbox_content = ""){
+    bool $has_icons_right = false, string $icon_right = "", bool $has_helpbox = false, string $helpbox_content = "", string $accepting_files = "*"){
 
         $this->balise = $balise;
         $this->role = $role;
@@ -45,6 +46,7 @@ class Input{
         $this->icon_right = $icon_right;
         $this->has_helpbox = $has_helpbox;
         $this->helpbox_content = $helpbox_content;
+        $this->accepting_files = $accepting_files;
 
     }
 
@@ -124,6 +126,10 @@ class Input{
         return $this->helpbox_content;
     }
 
+    public function getAcceptingFiles() : bool{
+        return $this->accepting_files;
+    }
+
 
     public function setBalise(string $new_balise) : void{
         $this->balise = $new_balise;
@@ -201,6 +207,10 @@ class Input{
         $this->helpbox_content = $new_helpbox_content;
     }
 
+    public function setAcceptingFiles(string $new_accepting_files) : void{
+        $this->accepting_files = $new_accepting_files;
+    }
+
     public function createInput() : string{
 
         $add_ons = "";
@@ -236,9 +246,39 @@ class Input{
                 break;
             
             default:
+
+                if($this->type != "file"){
                 $input .= "<input class='{$this->class} {$static}' type='{$this->type}' id='{$this->id}' name='{$this->name}' {$value} placeholder=\"{$this->placeholder}\" autofocus='{$this->autofocus}' {$readonly}>
                            {$icons} 
                            {$helpbox}";
+                }else{
+                $input .= "<input type=\"hidden\" name=\"MAX_FILE_SIZE\" value=\"500000\" />
+                            <div id=\"file-js-example\" class=\"file has-name\">
+                            <label class=\"file-label\">
+                                <input class=\"file-input\" type=\"file\" name=\"{$this->name}\" id='{$this->id}' accept=\"{$this->accepting_files}\">
+                                <span class=\"file-cta\">
+                                <span class=\"file-icon\">
+                                    <i class=\"fas fa-upload\"></i>
+                                </span>
+                                <span class=\"file-label\">
+                                    Choisissez un fichier
+                                </span>
+                                </span>
+                                <p class=\"file-name help\" id='statebox_{$this->name}'>
+                                 Aucun fichier uploadé
+                                </p>
+                            </label>
+                           </div>
+                           <script>
+                           const fileInput = document.querySelector('#file-js-example input[type=file]');
+                           fileInput.onchange = () => {
+                             if (fileInput.files.length > 0) {
+                               const fileName = document.querySelector('#file-js-example .file-name');
+                               fileName.textContent = fileInput.files[0].name;
+                             }
+                           }
+                           </script>";
+                }
                 break;
         }
 

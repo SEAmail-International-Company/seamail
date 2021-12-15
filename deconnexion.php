@@ -8,6 +8,7 @@ unset($_SESSION["mail"]);
 unset($_SESSION["score"]);
 unset($_SESSION["rang"]);
 unset($_SESSION["profile_picture"]);
+unset($_SESSION["date_creation_compte"]);
 
 session_destroy();
 

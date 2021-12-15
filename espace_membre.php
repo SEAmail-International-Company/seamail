@@ -10,8 +10,37 @@ $web->addMenuLeft($theme);
 
 $web->addCookieNotif($notif);
 $web->addJSlink("js/espace_membre.js");
+$web->addJSlink("js/changeInputStatus.js");
+$web->addJSlink("js/verifForm.js");
 $web->addChat();
-//$web->addModal("Modifier mon compte", "", "modal_modif_account");
+
+$profile_picture = showResumeProfile();
+
+$avatar_input = new Input("input", "", "file", "avatar", "avatar", "input", "", $_SESSION['profile_picture'], "", true, false, true, false, true, "file", false, "", true, "", ".png, .jpg, .jpeg, .gif");
+$avatar_field = new Field("", false, false, true, "Photo de profil (5Mo max. / .png, .jpg et .gif uniquement)", [$avatar_input->createInput()]);
+
+$username_input = new Input("input", "", "text", "username", "username", "input", "Nom d'utilisateur", $_SESSION['username'], "", true, false, true, false, true, "user", false, "", true);
+$username_field = new Field("", false, false, true, "Nom d'utilisateur", [$username_input->createInput()]);
+
+$mail_input = new Input("input", "", "mail", "mail", "mail", "input", "Adresse mail", $_SESSION['mail'], "", true, false, true, false, true, "envelope", false, "", true);
+$mail_field = new Field("", false, false, true, "Adresse mail", [$mail_input->createInput()]);
+
+$password_input = new Input("input", "", "password", "password", "password", "input", "Mot de passe", "", "", true, false, true, false, true, "lock", false, "", true);
+$password_field = new Field("", false, false, true, "Mot de passe", [$password_input->createInput()]);
+
+$rang_input = new Input("input", "", "text", "rang", "rang", "input", "Rang", $_SESSION['rang'], "", true, true, true, true, true, "hat-wizard", false, "", true);
+$rang_field = new Field("", false, false, true, "Rang", [$rang_input->createInput()]);
+
+$score_input = new Input("input", "", "text", "score", "score", "input", "Score", $_SESSION['score'], "", true, true, true, true, true, "trophy", false, "", true);
+$score_field = new Field("", false, false, true, "Score", [$score_input->createInput()]);
+
+$submit_input = new Input("input", "", "submit", "modifier", "modifier", "button is-dark", "", "Modifier");
+$close_input = new Input("input", "", "button", "fermer_modif", "fermer_modif", "button is-light close_modif_account", "", "Fermer");
+$bottom_field = new Field("", true, false, false, "", [$submit_input->createInput(), $close_input->createInput()]);
+
+$form_obj = new Form("POST", "modifAccountForm", [$avatar_field->createField(), $username_field->createField(), $mail_field->createField(), $password_field->createField(), $rang_field->createField(), $score_field->createField(), $bottom_field->createField()], true);
+$form = $form_obj->createForm();
+$web->addModal("Modifier mon compte", $profile_picture.$form, "modal_modif_account");
 
 $web->addToBody(<<<HTML
 <section class="hero" style="bottom: 0 !important; position:fixed !important; width: 100%; height: 70px;">
@@ -45,99 +74,11 @@ $web->addToBody(<<<HTML
   </div>
 </section>
 
-
-<div class="modal" id="modal_modif_account">
-  <div class="modal-background"></div>
-    <div class="modal-content">
-      <header class="modal-card-head">
-        <p class="modal-card-title">Modifier mon compte</p>
-        <button class="delete close_modif_account" aria-label="close"></button>
-      </header>
-      <div class="card">
-        <div class="card-content">
-          
-        <figure class="image is-64x64">
-                <img class="is-rounded" src="{$_SESSION['profile_picture']}" alt="Placeholder image">
-              </figure>
-          <div class="media">
-            <div class="media-left">
-            </div>
-            <div class="media-content">
-              <p class="subtitle is-6">Compte créé le <time datetime="2016-1-1">01/02/2021 à 15:54</time></p>
-            </div>
-          </div>
-          <div class="content">
-            <form method="POST">  
-              <div class="field has-addons">  
-                <div class="control">
-                  <button type="button" class="button is-static">
-                    Nom d'utilisateur
-                  </button>
-                </div>
-                <div class="control is-expanded">
-                  <input class="input is-static pl-3" id="username" name="username" type="text" value="@{$_SESSION['username']}" readonly>
-                </div>
-                <div class="control">
-                  <button type="button" class="button is-dark is-light" id="edit-username">
-                    <span class="icons">
-                      <i class="fas fa-pen"></i>
-                    </span>
-                  </button>
-                </div>
-              </div>
-            <label class="label">Adresse mail</label>
-              <div class="field has-addons">
-                <div class="control is-expanded">
-                  <input class="input is-static" id="mail" name="mail" type="mail" value="{$_SESSION['mail']}" readonly>
-                </div>
-                <div class="control">
-                  <button type="button" class="button is-dark is-light" id="edit-mail">
-                    <span class="icons">
-                      <i class="fas fa-pen"></i>
-                    </span>
-                  </button>
-                </div>
-              </div>
-              <label class="label">Score</label>
-              <div class="field has-addons">
-                <div class="control is-expanded">
-                  <input class="input is-static" id="score" name="score" type="text" value="{$_SESSION['score']}" readonly>
-                </div>
-                <div class="control">
-                  <button type="button" class="button is-dark is-light" id="edit-score">
-                    <span class="icons">
-                      <i class="fas fa-pen"></i>
-                    </span>
-                  </button>
-                </div>
-              </div>
-              <label class="label">Rang</label>
-              <div class="field has-addons">
-                <div class="control is-expanded">
-                  <input class="input is-static" id="rang" name="rang" type="text" value="{$_SESSION['rang']}" readonly>
-                </div>
-                <div class="control">
-                  <button type="button" class="button is-dark is-light" id="edit-rang">
-                    <span class="icons">
-                      <i class="fas fa-pen"></i>
-                    </span>
-                  </button>
-                </div>
-              </div>
-                <p class="control has-icons-left pt-5">
-                  <button type="submit" class="button is-dark">
-                    Enregistrer
-                  </button>
-                  <button type="button" class="button is-light close_modif_account">
-                    Fermer
-                  </button>
-                </p>
-            </form>
-          </div>
-        </div>
-      </div>
-  </div>
-</div>
+<script>
+    $(window).ready(function() {        
+        verifForm(["avatar", "mail", "username", "password"], "deconnexion.php", "php/modif_profile_php.php");
+     });
+</script>
 HTML);
 
 echo $web->toHTML($theme);

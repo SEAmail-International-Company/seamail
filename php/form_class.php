@@ -5,11 +5,13 @@ class Form extends Field{
     private $method;
     private $id;
     private $fields;
+    private $has_input_file;
 
-    public function __construct(string $method = "POST", string $id = "form", array $fields = []){
+    public function __construct(string $method = "POST", string $id = "form", array $fields = [], bool $has_input_file = false){
         $this->method = $method;
         $this->id = $id;
         $this->fields = $fields;
+        $this->has_input_file = $has_input_file;
     }
 
     public function getMethod() : string{
@@ -24,6 +26,10 @@ class Form extends Field{
         return $this->fields;
     }
 
+    public function getHasInputFile() : bool{
+        return $this->has_input_file;
+    }
+
     public function setMethod(string $new_method) : void{
         $this->method = $new_method;
     }
@@ -36,9 +42,14 @@ class Form extends Field{
         $this->fields = $new_fields;
     }
 
+    public function setHasInputFile(bool $new_status) : void{
+        $this->has_input_file = $new_status;
+    }
+
 
     public function createForm() : string{
-        $form = "<form method='{$this->method}' id='{$this->id}'>";
+        $add_on = $this->has_input_file ? "enctype=\"multipart/form-data\"" : "";
+        $form = "<form method='{$this->method}' id='{$this->id}' {$add_on}>";
 
         for($i = 0; $i < count($this->fields); $i++){
             $form .= $this->fields[$i];

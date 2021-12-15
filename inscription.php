@@ -14,53 +14,26 @@ $web->addJSlink("js/changeInputStatus.js");
 $web->addJSlink("js/verifForm.js");
 $web->addLoader($theme);
 
+$username_input = new Input("input", "", "text", "username", "username", "input", "Nom d'utilisateur", "", "", true, false, true, false, true, "user", false, "", true);
+$username_field = new Field("", false, false, true, "Nom d'utilisateur", [$username_input->createInput()]);
+
+$mail_input = new Input("input", "", "mail", "mail", "mail", "input", "Adresse mail", "", "", true, false, true, false, true, "envelope", false, "", true);
+$mail_field = new Field("", false, false, true, "Adresse mail", [$mail_input->createInput()]);
+
+$helpbox_content_password = "Doit contenir plus de 12 caractères parmis lesquels au moins une majuscule, une minuscule, un caractère spécial (!@#$%^&*) et un chiffre.";
+$password_input = new Input("input", "", "password", "password", "password", "input", "Mot de passe", "", "", true, false, true, false, true, "lock", false, $helpbox_content_password, true);
+$password_field = new Field("", false, false, true, "Mot de passe", [$password_input->createInput()]);
+
+$submit_input = new Input("input", "", "submit", "inscription", "inscription", "button is-info", "Inscription");
+$a_link = new Input("a", "", "", "", "", "button is-info is-outlined", "", "Déjà membre ?", "connexion.php");
+$bottom_field = new Field("", true, false, false, "", [$submit_input->createInput(), $a_link->createInput()]);
+
+$form_obj = new Form("POST", "registerForm", [$username_field->createField(), $mail_field->createField(), $password_field->createField(), $bottom_field->createField()]);
+$form = $form_obj->createForm();
+
 $web->addToBody(<<<HTML
 <div class="container is-fluid">
-    <form method="POST" id="registerForm">
-        <div class="field">
-            <label class="label">Nom d'utilisateur</label>
-            <p class="control has-icons-left is-expanded">
-                <input class="input" type="text" name="username" id="username" placeholder="Nom d'utilisateur" autofocus>
-                <span class="icon is-small is-left">
-                    <i class="fas fa-user"></i>
-                </span>
-                <p class="help" id="statebox_username"></p>
-            </p>
-        </div>
-        <div class="field">
-            <label class="label">Adresse mail</label>
-            <p class="control has-icons-left is-expanded">
-                <input class="input" type="mail" name="mail" id="mail" placeholder="Adresse mail">
-                <span class="icon is-small is-left">
-                    <i class="fas fa-lock"></i>
-                </span>       
-                <p class="help" id="statebox_mail"></p>
-            </p>
-        </div>
-        <div class="field">
-            <label class="label">Mot de passe</label>
-            <p class="control has-icons-left is-expanded">
-                <input class="input" type="password" name="password" id="password" placeholder="Mot de passe">
-                <span class="icon is-small is-left">
-                    <i class="fas fa-lock"></i>
-                </span>
-                <p class="help" id="statebox_password"></p>
-                <p class="help">Doit contenir plus de 12 caractères parmis lesquels au moins une majuscule, une minuscule, un caractère spécial (!@#$%^&*) et un chiffre.</p>
-            </p>
-        </div>
-        <div class="field is-grouped is-grouped-left mt-5">
-            <p class="control">
-                <button class="button is-info" type="submit">
-                    Inscription
-                </button>
-            </p>
-            <p class="control">
-                <a class="button is-info is-outlined" href="connexion.php">
-                    Déjà membre ?
-                </a>
-            </p>
-        </div>
-    </form> 
+    {$form}
 </div>  
 
 <script>

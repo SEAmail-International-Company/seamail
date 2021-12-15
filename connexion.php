@@ -25,7 +25,6 @@ $password_field = new Field("", false, false, true, "Mot de passe", [$password_i
 
 $submit_input = new Input("input", "", "submit", "connexion", "connexion", "button is-info", "Connexion");
 $a_link = new Input("a", "", "", "", "", "button is-info is-outlined", "", "Pas encore membre ?", "inscription.php");
-
 $bottom_field = new Field("", true, false, false, "", [$submit_input->createInput(), $a_link->createInput()]);
 
 $form_obj = new Form("POST", "loginForm", [$username_field->createField(), $password_field->createField(), $bottom_field->createField()]);
