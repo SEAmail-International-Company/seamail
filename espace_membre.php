@@ -12,6 +12,7 @@ $web->addCookieNotif($notif);
 $web->addJSlink("js/espace_membre.js");
 $web->addJSlink("js/changeInputStatus.js");
 $web->addJSlink("js/verifForm.js");
+$web->addJSlink("js/updateInputFile.js");
 $web->addChat();
 
 $profile_picture = showResumeProfile();
@@ -35,12 +36,28 @@ $score_input = new Input("input", "", "text", "score", "score", "input", "Score"
 $score_field = new Field("", false, false, true, "Score", [$score_input->createInput()]);
 
 $submit_input = new Input("input", "", "submit", "modifier", "modifier", "button is-dark", "", "Modifier");
-$close_input = new Input("input", "", "button", "fermer_modif", "fermer_modif", "button is-light close_modif_account", "", "Fermer");
+$close_input = new Input("input", "", "button", "fermer_modif", "fermer_modif", "button is-light close_modal_modif_account", "", "Fermer");
 $bottom_field = new Field("", true, false, false, "", [$submit_input->createInput(), $close_input->createInput()]);
 
 $form_obj = new Form("POST", "modifAccountForm", [$avatar_field->createField(), $username_field->createField(), $mail_field->createField(), $password_field->createField(), $rang_field->createField(), $score_field->createField(), $bottom_field->createField()], true);
 $form = $form_obj->createForm();
 $web->addModal("Modifier mon compte", $profile_picture.$form, "modal_modif_account");
+
+
+$logo_salon_input = new Input("input", "", "file", "logo_salon", "logo_salon", "input", "", "", "", true, false, true, false, true, "file", false, "", true, "", ".png, .jpg, .jpeg, .gif");
+$logo_salon_field = new Field("", false, false, true, "Logo du salon (5Mo max. / .png, .jpg et .gif uniquement)", [$logo_salon_input->createInput()]);
+
+$nom_salon_input = new Input("input", "", "text", "nom_salon", "nom_salon", "input", "Nom du salon", "", "", true, false, true, false, true, "user", false, "", true);
+$nom_salon_field = new Field("", false, false, true, "Nom du salon", [$nom_salon_input->createInput()]);
+
+$create_salon_input = new Input("input", "", "submit", "creer_salon", "creer_salon", "button is-dark", "", "Créer");
+$close_salon_input = new Input("input", "", "button", "fermer_creer_salon", "fermer_creer_salon", "button is-light close_modal_create_salon", "", "Fermer");
+$bottom_salon_field = new Field("", true, false, false, "", [$create_salon_input->createInput(), $close_salon_input->createInput()]);
+
+$form_obj_create_salon = new Form("POST", "createSalonForm", [$logo_salon_field->createField(), $nom_salon_field->createField(), $bottom_salon_field->createField()], true);
+$form_create_salon = $form_obj_create_salon->createForm();
+
+$web->addModal("Créer un nouveau salon", $form_create_salon, "modal_create_salon");
 
 $web->addToBody(<<<HTML
 <section class="hero" style="bottom: 0 !important; position:fixed !important; width: 100%; height: 70px;">
@@ -75,9 +92,12 @@ $web->addToBody(<<<HTML
 </section>
 
 <script>
-    $(window).ready(function() {        
-        verifForm(["avatar", "mail", "username", "password"], "deconnexion.php", "php/modif_profile_php.php");
-     });
+    $(window).ready(function() { 
+        updateInputFile("logo_salon", "inputFileCreerSalon");
+        updateInputFile("avatar", "inputFileAvatar");
+        verifForm(["avatar", "mail", "username", "password"], "deconnexion.php", "php/modif_profile_php.php", "modifAccountForm");
+        verifForm(["logo_salon", "nom_salon"], "deconnexion.php", "php/creer_salon_php.php", "createSalonForm");
+      });
 </script>
 HTML);
 

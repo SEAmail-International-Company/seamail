@@ -253,7 +253,7 @@ class Input{
                            {$helpbox}";
                 }else{
                 $input .= "<input type=\"hidden\" name=\"MAX_FILE_SIZE\" value=\"500000\" />
-                            <div id=\"file-js-example\" class=\"file has-name\">
+                            <div id=\"{$this->id}\" class=\"file has-name\">
                             <label class=\"file-label\">
                                 <input class=\"file-input\" type=\"file\" name=\"{$this->name}\" id='{$this->id}' accept=\"{$this->accepting_files}\">
                                 <span class=\"file-cta\">
@@ -268,16 +268,7 @@ class Input{
                                  Aucun fichier uploadé
                                 </p>
                             </label>
-                           </div>
-                           <script>
-                           const fileInput = document.querySelector('#file-js-example input[type=file]');
-                           fileInput.onchange = () => {
-                             if (fileInput.files.length > 0) {
-                               const fileName = document.querySelector('#file-js-example .file-name');
-                               fileName.textContent = fileInput.files[0].name;
-                             }
-                           }
-                           </script>";
+                           </div>";
                 }
                 break;
         }

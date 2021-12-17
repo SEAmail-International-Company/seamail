@@ -208,8 +208,8 @@ function formatTimeStamp($timestamp){
 function showResumeProfile(){
     return "<div class=\"media\">
     <div class=\"media-left\">
-      <figure class=\"image is-48x48\">
-        <a href=\"{$_SESSION['profile_picture']}\"><img class=\"is-rounded\" src=\"{$_SESSION['profile_picture']}\" alt=\"Profile picture\"></a>
+      <figure class=\"image is-96x96\">
+        <a href=\"{$_SESSION['profile_picture']}\" target='_blank' title=\"Ouvrir l'image dans un nouvel onglet\"><img src=\"{$_SESSION['profile_picture']}\" alt=\"Profile picture\" style='border-radius: 10px;'></a>
       </figure>
     </div>
     <div class=\"media-content\">

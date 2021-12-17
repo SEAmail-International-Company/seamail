@@ -2,7 +2,6 @@
 require_once("variables.php");
 require_once("functions.php");
 date_default_timezone_set("Europe/Paris");
-$success = false;
 
 $ERR["username"] = is_empty("username");
 $ERR["password"] = is_empty("password");

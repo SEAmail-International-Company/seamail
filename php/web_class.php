@@ -104,7 +104,7 @@ class Web{
             <div class="modal-content">
                 <header class="modal-card-head">
                     <p class="modal-card-title">{$titre}</p>
-                    <button class="delete close_modif_account" aria-label="close"></button>
+                    <button class="delete close_{$id}" aria-label="close"></button>
                 </header>
                 <div class="card">
                     <div class="card-content">
@@ -182,7 +182,7 @@ class Web{
             <ul class="menu-list">
                 <li>
                 <a><i class="fas fa-comments"></i> | Général</a>
-                <a><i class="fas fa-plus-circle"></i> | Créer un salon</a>
+                <a id="create_salon"><i class="fas fa-plus-circle"></i> | Créer un salon</a>
                 </li>
             </ul>
             <p class="menu-label">

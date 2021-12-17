@@ -38,7 +38,7 @@ $web->addToBody(<<<HTML
 
 <script>
     $(window).ready(function() {        
-        verifForm(["username", "password", "mail"], "connexion.php", "php/inscription_php.php");
+        verifForm(["username", "password", "mail"], "connexion.php", "php/inscription_php.php", "registerForm");
      });
 </script>
 HTML);

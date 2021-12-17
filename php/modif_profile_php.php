@@ -2,7 +2,6 @@
 require_once("variables.php");
 require_once("functions.php");
 date_default_timezone_set("Europe/Paris");
-$success = false;
 
 $username = htmlspecialchars($_POST['username']);
 $mail = htmlspecialchars($_POST['mail']);
@@ -18,6 +17,7 @@ $ERR["mail"] = !empty($mail) ? 0 : -9;
 
 if(is_input_correct("mail", $ERR)) $ERR["mail"] = hasChanged("mail", $mail, $_SESSION["id"]) ? is_correct_mail($mail) : -8;
 if(is_input_correct("mail", $ERR)) $ERR["mail"] = is_mail_available($mail);
+if(is_input_correct("password", $ERR)) $ERR["password"] = hasChanged("password", $password, $_SESSION["id"]);
 
 if(isset($_FILES['avatar']) && !empty($_FILES['avatar']['name'])){
 
@@ -40,10 +40,10 @@ if(isset($_FILES['avatar']) && !empty($_FILES['avatar']['name'])){
                     $profile_picture = "img/profiles/".$_SESSION['username'].".".$ext;
 					$ERR["avatar"] = 0;
 
-				}else $ERR["avatar"] = -4;
-			}else $ERR["avatar"] = -3;
-		}else $ERR["avatar"] = -2;
-	}else $ERR["avatar"] = -1;
+				}else $ERR["avatar"] = -13;
+			}else $ERR["avatar"] = -12;
+		}else $ERR["avatar"] = -11;
+	}else $ERR["avatar"] = -10;
 
 if (is_one_input_correct($ERR)) {
     

@@ -1,6 +1,6 @@
-function verifForm(inputArray, urlRedirection, urlPhpFile){
+function verifForm(inputArray, urlRedirection, urlPhpFile, id){
 
-    $("form").submit(function(e){
+    $("#" + id).submit(function(e){
 
         e.preventDefault();
 
