@@ -20,9 +20,14 @@ function verifForm(inputArray, urlRedirection, urlPhpFile, id){
 
                 var res = this.response;
 
-                if (res.success) document.location.href = urlRedirection;
-                else{
-
+                if (res.success && urlRedirection != "") {
+                    document.location.href = urlRedirection;
+                }else if(res.success && urlRedirection == "") {
+                    $("#"+id).get(0).reset();
+                    const InputFile = document.querySelector('#piece_jointe_message .file-name');
+                    InputFile.textContent = "Aucun fichier uploadé";
+                    $("#salon_msg").load(location.href + " #salon_msg");
+                }else{
                     for (cle in input){
                         statebox[cle].html(res.msg[cle]);
 

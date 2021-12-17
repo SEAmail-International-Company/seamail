@@ -49,7 +49,7 @@ class Form extends Field{
 
     public function createForm() : string{
         $add_on = $this->has_input_file ? "enctype=\"multipart/form-data\"" : "";
-        $form = "<form method='{$this->method}' id='{$this->id}' {$add_on}>";
+        $form = "<form autocomplete=\"off\" method='{$this->method}' id='{$this->id}' {$add_on}>";
 
         for($i = 0; $i < count($this->fields); $i++){
             $form .= $this->fields[$i];

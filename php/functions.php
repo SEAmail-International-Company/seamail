@@ -218,3 +218,58 @@ function showResumeProfile(){
     </div>
     </div>";
 }
+
+function add_user_in_salon(string $username, int $id_salon){
+    $req = sendQuery("SELECT id_user FROM users WHERE username = '$username'");
+    $id_user = $req->fetch();
+    sendQuery("INSERT INTO membres_salons (id_salon, id_membre) VALUES ('$id_salon', '$id_user')");
+}
+
+function addMessage(string $picture, string $author, string $message, string $hour, string $url_pj = "") : string{
+    $piece_jointe = $url_pj == "" ? "" : "<a href='$url_pj' target='_blank'>Pièce jointe</a> · ";
+    return (<<<HTML
+    <article class="media">
+        <figure class="media-left">
+        <p class="image is-64x64">
+            <img src="{$picture}">
+        </p>
+        </figure>
+        <div class="media-content">
+            <div class="content">
+                <p>
+                <strong>{$author}</strong>
+                <br>
+                {$message}
+                <br>
+                <small>{$piece_jointe}<a>Répondre</a> · {$hour}</small>
+                </p>
+            </div>
+        </div>
+    </article>
+    HTML);
+}
+
+function sendMessage($id_user, $contenu_message, $salon_name, $url_pj){
+    $date_publication = date("Y-m-d H:i:s");
+    do { 
+        $id_pj = random_int(1, 999);
+        $req = sendQuery("SELECT * FROM piecesjointes WHERE id_piece_jointe = '$id_pj'");
+        $if_id_pj_exists = $req->rowCount();
+    }while($if_id_pj_exists != 0);
+
+    $salon_req = sendQuery("SELECT id_salon FROM salons WHERE nom_salon = '$salon_name'");
+    $id_salon_recup = $salon_req->fetch();
+    $id_salon = $id_salon_recup["id_salon"];
+
+    sendQuery("INSERT INTO piecesjointes (id_piece_jointe, lien_piece_jointe) VALUES ('$id_pj', '$url_pj')");
+
+    do { 
+        $id_msg = random_int(1, 999);
+        $req_msg = sendQuery("SELECT * FROM messages WHERE id_message = '$id_msg'");
+        $if_id_msg_exists = $req_msg->rowCount();
+    }while($if_id_msg_exists != 0);
+    
+    sendQuery("INSERT INTO messages (id_message, id_auteur, id_piece_jointe, contenu, date_publication) VALUES ('$id_msg', '$id_user', '$id_pj', '$contenu_message', '$date_publication')");
+    sendQuery("INSERT INTO messages_salons (id_salon, id_message) VALUES ('$id_salon', '$id_msg')");
+
+}

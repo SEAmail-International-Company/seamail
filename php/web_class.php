@@ -1,5 +1,6 @@
 <?php
 require_once("form_class.php");
+require_once("requetes_php.php");
 if(isset($_COOKIE["theme"])) $theme = $_COOKIE["theme"];
 else $theme = "dark";
 
@@ -85,12 +86,14 @@ class Web{
         HTML);
     }
 
-    public function addChat(string $salon = "général", string $utilisateur = "") : void {
+    public function addChat(string $salon = "Général") : void {
+        $_SESSION["salon"] = $salon;
+        $messages = showListMessages($salon);
         $this->addToBody(<<<HTML
-          <div class="tile is-vertical is-parent">
+          <div class="tile is-vertical is-parent" id="salon_msg">
             <div class="tile is-child box">
-            <p class="title">Salon {$salon}</p>
-            {$this->addMessage("img/logo_court_blanc.png", "Jean Valjean", "Coucou", "12:32")}
+            <p class="title">Salon : "{$salon}"</p>
+            {$messages}
             </div>
         </div>
         </div>
@@ -138,30 +141,8 @@ class Web{
         }
     }
 
-    public function addMessage(string $picture, string $author, string $message, string $hour) : string{
-        return (<<<HTML
-        <article class="media">
-            <figure class="media-left">
-            <p class="image is-64x64">
-                <img src="{$picture}">
-            </p>
-            </figure>
-            <div class="media-content">
-                <div class="content">
-                    <p>
-                    <strong>{$author}</strong>
-                    <br>
-                    {$message}
-                    <br>
-                    <small><a>J'aime</a> · <a>Répondre</a> · {$hour}</small>
-                    </p>
-                </div>
-            </div>
-        </article>
-        HTML);
-    }
-
     public function addMenuLeft(string $theme) : void{
+        $liste_salons = showListSalons();
         $icon = $theme == "dark" ? "sun" : "moon";
         $this->addToBody(<<<HTML
         <div class="tile is-ancestor">
@@ -181,7 +162,7 @@ class Web{
             </p>
             <ul class="menu-list">
                 <li>
-                <a><i class="fas fa-comments"></i> | Général</a>
+                {$liste_salons}
                 <a id="create_salon"><i class="fas fa-plus-circle"></i> | Créer un salon</a>
                 </li>
             </ul>

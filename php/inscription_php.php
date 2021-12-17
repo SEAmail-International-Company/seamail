@@ -25,6 +25,7 @@ if (are_all_input_correct($ERR)) {
     $profile_picture = "img/profiles/default.png";
 
     add_new_user($username, $mail, $score, $rang, $password, $date_creation_compte, $profile_picture);
+    add_user_in_salon($username, 1);
     setcookie("notification", "inscription", strtotime('+30 days'), "/", "localhost", false, false);
     $success = true;
 }

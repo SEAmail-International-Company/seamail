@@ -12,7 +12,6 @@ $web->addCookieNotif($notif);
 $web->addJSlink("js/espace_membre.js");
 $web->addJSlink("js/changeInputStatus.js");
 $web->addJSlink("js/verifForm.js");
-$web->addJSlink("js/updateInputFile.js");
 $web->addChat();
 
 $profile_picture = showResumeProfile();
@@ -47,7 +46,7 @@ $web->addModal("Modifier mon compte", $profile_picture.$form, "modal_modif_accou
 $logo_salon_input = new Input("input", "", "file", "logo_salon", "logo_salon", "input", "", "", "", true, false, true, false, true, "file", false, "", true, "", ".png, .jpg, .jpeg, .gif");
 $logo_salon_field = new Field("", false, false, true, "Logo du salon (5Mo max. / .png, .jpg et .gif uniquement)", [$logo_salon_input->createInput()]);
 
-$nom_salon_input = new Input("input", "", "text", "nom_salon", "nom_salon", "input", "Nom du salon", "", "", true, false, true, false, true, "user", false, "", true);
+$nom_salon_input = new Input("input", "", "text", "nom_salon", "nom_salon", "input", "Nom du salon", "", "", true, false, true, false, true, "signature", false, "", true);
 $nom_salon_field = new Field("", false, false, true, "Nom du salon", [$nom_salon_input->createInput()]);
 
 $create_salon_input = new Input("input", "", "submit", "creer_salon", "creer_salon", "button is-dark", "", "Créer");
@@ -57,47 +56,62 @@ $bottom_salon_field = new Field("", true, false, false, "", [$create_salon_input
 $form_obj_create_salon = new Form("POST", "createSalonForm", [$logo_salon_field->createField(), $nom_salon_field->createField(), $bottom_salon_field->createField()], true);
 $form_create_salon = $form_obj_create_salon->createForm();
 
+
+$piece_jointe_message_input = new Input("input", "", "file", "piece_jointe_message", "piece_jointe_message", "input", "", "", "", true, false, true, false, true, "file", false, "", true, "", ".png, .jpg, .jpeg, .gif");
+
+$message_input = new Input("input", "", "text", "message", "message", "input", "Ecrivez votre message...", "", "", true, false, true, false, true, "comment-dots", false, "", true);
+
+$envoyer_message_input = new Input("input", "", "submit", "envoyer_message", "envoyer_message", "button is-info", "", "Envoyer");
+$message_field = new Field("", true, false, false, "", [$piece_jointe_message_input->createInput(), $message_input->createInput(), $envoyer_message_input->createInput()]);
+
+$form_obj_create_message = new Form("POST", "createmessageForm", [$message_field->createField()], true);
+$form_create_message = $form_obj_create_message->createForm();
+
 $web->addModal("Créer un nouveau salon", $form_create_salon, "modal_create_salon");
 
 $web->addToBody(<<<HTML
-<section class="hero" style="bottom: 0 !important; position:fixed !important; width: 100%; height: 70px;">
-  <div class="hero-body" style="margin-top: -55px !important;">
-    <form method="POST" class="box">
-      <div class="field has-addons">
-        <p class="control">
-          <div id="file-js-example" class="file has-name">
-            <label class="file-label">
-              <input class="file-input" type="file" name="resume"/>
-              <span class="file-cta">
-                <span class="file-icon">
-                  <i class="fas fa-paperclip"></i>
-                </span>
-              </span>
-            </label>
-          </div>
-        </p>
-        <p class="control is-expanded">
-          <input class="input" type="text" placeholder="Ecrivez votre message...">
-        </p>
-        <p class="control has-icons-left">
-          <button type="submit" class="button is-info">
-            <span class="icons">
-              <i class="fas fa-paper-plane"></i>
-            </span>
-          </button>
-        </p>
-      </div>
-    </form>
-  </div>
+<section class="hero" style="bottom: 0 !important; position:fixed !important; width: 100%; height: 0px;">
+  <div class="hero-body" style="margin-top: -100px !important; background:black; height: 20px; padding-top:0 !important;">
+  {$form_create_message}
+  </div>  
 </section>
 
 <script>
-    $(window).ready(function() { 
-        updateInputFile("logo_salon", "inputFileCreerSalon");
-        updateInputFile("avatar", "inputFileAvatar");
+    $(window).ready(function() {        
         verifForm(["avatar", "mail", "username", "password"], "deconnexion.php", "php/modif_profile_php.php", "modifAccountForm");
-        verifForm(["logo_salon", "nom_salon"], "deconnexion.php", "php/creer_salon_php.php", "createSalonForm");
-      });
+        verifForm(["logo_salon", "nom_salon"], "espace_membre.php", "php/creer_salon_php.php", "createSalonForm");
+        verifForm(["piece_jointe_message", "message"], "", "php/publier_message.php", "createmessageForm");
+        $("#message").css("width", "730px");
+     });
+
+    const fileInputSalon = document.querySelector('#logo_salon input[type=file]');
+    fileInputSalon.onchange = () => {
+      if (fileInputSalon.files.length > 0) {
+        const fileNameSalon = document.querySelector('#logo_salon .file-name');
+        fileNameSalon.textContent = fileInputSalon.files[0].name;
+      }
+    }
+
+    const fileInputCompte = document.querySelector('#avatar input[type=file]');
+    fileInputCompte.onchange = () => {
+      if (fileInputCompte.files.length > 0) {
+        const fileNameCompte = document.querySelector('#avatar .file-name');
+        fileNameCompte.textContent = fileInputCompte.files[0].name;
+      }
+    }
+
+    const fileInputPj = document.querySelector('#piece_jointe_message input[type=file]');
+    fileInputPj.onchange = () => {
+      if (fileInputPj.files.length > 0) {
+        const fileNamePj = document.querySelector('#piece_jointe_message .file-name');
+        fileNamePj.textContent = fileInputPj.files[0].name;
+      }
+    }
+
+  window.setInterval(function(){
+    $("#salon_msg").load(location.href + " #salon_msg");
+	},1000)
+      
 </script>
 HTML);
 

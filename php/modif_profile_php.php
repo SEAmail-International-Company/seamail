@@ -43,7 +43,7 @@ if(isset($_FILES['avatar']) && !empty($_FILES['avatar']['name'])){
 				}else $ERR["avatar"] = -13;
 			}else $ERR["avatar"] = -12;
 		}else $ERR["avatar"] = -11;
-	}else $ERR["avatar"] = -10;
+	}else $ERR["avatar"] = 0;
 
 if (is_one_input_correct($ERR)) {
     

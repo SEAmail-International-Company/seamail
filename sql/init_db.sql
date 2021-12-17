@@ -20,16 +20,12 @@ CREATE TABLE piecesjointes (
 
 CREATE TABLE messages (
   id_message INT UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
-  id_expediteur INT UNSIGNED NOT NULL,
-  id_destinataire INT UNSIGNED NOT NULL,
+  id_auteur INT UNSIGNED NOT NULL,
   id_piece_jointe INT UNSIGNED NOT NULL,
   contenu VARCHAR(255),
   date_publication TIMESTAMP,
-  CONSTRAINT fk_id_expediteur
-  FOREIGN KEY (id_expediteur)
-  REFERENCES users(id_user) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT fk_id_destinataire
-  FOREIGN KEY (id_destinataire)
+  CONSTRAINT fk_id_auteur
+  FOREIGN KEY (id_auteur)
   REFERENCES users(id_user) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT fk_id_piece_jointe
   FOREIGN KEY (id_piece_jointe)
@@ -57,3 +53,16 @@ CREATE TABLE messages (
     FOREIGN KEY (id_salon)
     REFERENCES salons(id_salon) ON DELETE CASCADE ON UPDATE CASCADE)
     ENGINE InnoDB CHARSET utf8mb4;
+
+  CREATE TABLE messages_salons (
+    id_salon INT UNSIGNED NOT NULL,
+    id_message INT UNSIGNED NOT NULL,
+    CONSTRAINT fk_id_message
+    FOREIGN KEY (id_message)
+    REFERENCES messages(id_message) ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT fk_id_salon_msg
+    FOREIGN KEY (id_salon)
+    REFERENCES salons(id_salon) ON DELETE CASCADE ON UPDATE CASCADE)
+    ENGINE InnoDB CHARSET utf8mb4;
+
+    INSERT INTO salons (nom_salon, date_creation_salon, icone_salon, createur_salon) VALUES ("Général", "2021-12-17", "img/salons/default.png", 1);
