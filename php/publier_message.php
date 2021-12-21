@@ -14,12 +14,29 @@ if(isset($_FILES['piece_jointe_message']) && !empty($_FILES['piece_jointe_messag
         case 'image/jpeg': $ext = 'jpg'; break;
         case 'image/pjpeg' : $ext = 'jpg'; break;
         case 'image/gif' : $ext = 'gif'; break;
-        case 'image/png' : $ext = 'png'; break; 	
+        case 'image/png' : $ext = 'png'; break; 
+        case 'image/svg+xml' : $ext = 'svg'; break; 
+        case 'image/tiff' : $ext = 'tiff'; break; 
+        case 'image/webp' : $ext = 'webp'; break; 
+        case 'application/msword' : $ext = 'doc'; break; 
+        case 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' : $ext = 'docx'; break; 
+        case 'text/html' : $ext = 'html'; break; 	
+        case 'image/x-icon' : $ext = 'ico'; break; 
+        case 'application/json' : $ext = 'json'; break; 
+        case 'video/mpeg' : $ext = 'mpeg'; break; 
+        case 'application/pdf' : $ext = 'pdf'; break; 
+        case 'application/vnd.ms-powerpoint' : $ext = 'ppt'; break;
+        case 'application/vnd.openxmlformats-officedocument.presentationml.presentation' : $ext = 'pptx'; break;
+        case 'application/vnd.ms-excel' : $ext = 'xls'; break;
+        case 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' : $ext = 'xlsx'; break;
+        case 'application/zip' : $ext = 'zip'; break;
+        case 'application/xml' : $ext = 'xml'; break;
+        case 'application/x-7z-compressed' : $ext = '7z'; break;
         default          : $ext = ''; break;
     }
 
     if ($ext != '') {
-        $tailleMax = 500000;
+        $tailleMax = 50000000;
         
         if ($_FILES['piece_jointe_message']['size'] <= $tailleMax){
             $rand_id = random_int(1000000, 9999999);
@@ -42,6 +59,7 @@ if (are_all_input_correct($ERR)) {
     $url_pj = isset($url_pj) ? $url_pj : "";
 
     sendMessage($id_user, $message, $salon_name, $url_pj);
+    updateScore($id_user);
     $success = true;
 }
 

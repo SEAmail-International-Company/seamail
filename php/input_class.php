@@ -252,17 +252,14 @@ class Input{
                            {$icons} 
                            {$helpbox}";
                 }else{
-                $input .= "<input type=\"hidden\" name=\"MAX_FILE_SIZE\" value=\"500000\" />
+                $input .= "<input type=\"hidden\" name=\"MAX_FILE_SIZE\" value=\"50000000\" />
                             <div id=\"{$this->id}\" class=\"file has-name\">
                             <label class=\"file-label\">
                                 <input class=\"file-input\" type=\"file\" name=\"{$this->name}\" id='{$this->id}' accept=\"{$this->accepting_files}\">
                                 <span class=\"file-cta\">
-                                <span class=\"file-icon\">
-                                    <i class=\"fas fa-upload\"></i>
-                                </span>
-                                <span class=\"file-label\">
-                                    Choisissez un fichier
-                                </span>
+                                    <span class=\"file-icon\">
+                                    &nbsp;<i class=\"fas fa-upload\"></i>
+                                    </span>
                                 </span>
                                 <p class=\"file-name help\" id='statebox_{$this->name}'>
                                  Aucun fichier uploadé

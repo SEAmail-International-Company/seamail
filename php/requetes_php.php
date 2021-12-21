@@ -13,7 +13,7 @@ function showListSalons(){
     }
 }
 
-function showListMessages(string $name_salon){
+function showListMessages(string $name_salon, string $theme){
     $req = sendQuery("SELECT * FROM messages WHERE id_message IN
                         (SELECT id_message FROM messages_salons WHERE id_salon IN
                         (SELECT id_salon FROM salons WHERE nom_salon = '$name_salon')) ORDER BY date_publication DESC");
@@ -31,7 +31,7 @@ function showListMessages(string $name_salon){
         $pj = $pj_infos->fetch();
         $pj_url = $pj["lien_piece_jointe"];
 
-        $message .= addMessage($auteur["profile_picture"], $auteur["username"], $data["contenu"], formatTimeStamp($data["date_publication"]), $pj_url);
+        $message .= addMessage($auteur["profile_picture"], $auteur["username"], $data["contenu"], formatTimeStamp($data["date_publication"]), $pj_url, $theme);
     }
     return $message;
 }

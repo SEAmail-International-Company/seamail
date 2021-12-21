@@ -209,7 +209,7 @@ function showResumeProfile(){
     return "<div class=\"media\">
     <div class=\"media-left\">
       <figure class=\"image is-96x96\">
-        <a href=\"{$_SESSION['profile_picture']}\" target='_blank' title=\"Ouvrir l'image dans un nouvel onglet\"><img src=\"{$_SESSION['profile_picture']}\" alt=\"Profile picture\" style='border-radius: 10px;'></a>
+        <a href=\"{$_SESSION['profile_picture']}\" target='_blank' title=\"Ouvrir l'image dans un nouvel onglet\"><img src=\"{$_SESSION['profile_picture']}\" alt=\"Profile picture\" style='clip-path:ellipse(39% 50%);'></a>
       </figure>
     </div>
     <div class=\"media-content\">
@@ -221,32 +221,74 @@ function showResumeProfile(){
 
 function add_user_in_salon(string $username, int $id_salon){
     $req = sendQuery("SELECT id_user FROM users WHERE username = '$username'");
-    $id_user = $req->fetch();
+    $id_user_fetch = $req->fetch();
+    $id_user = $id_user_fetch['id_user'];
     sendQuery("INSERT INTO membres_salons (id_salon, id_membre) VALUES ('$id_salon', '$id_user')");
 }
 
-function addMessage(string $picture, string $author, string $message, string $hour, string $url_pj = "") : string{
-    $piece_jointe = $url_pj == "" ? "" : "<a href='$url_pj' target='_blank'>Pièce jointe</a> · ";
+function addMessage(string $picture, string $author, string $message, string $hour, string $url_pj = "", string $theme) : string{
+    $color = $theme == "dark" ? "dark" : "light"; 
+    $type_pj =  $url_pj == "" ? "" : mime_content_type("../" . $url_pj);
+     $req = sendQuery("SELECT score FROM users WHERE username = '$author'");
+     $score_user_fetch = $req->fetch();
+     $score_user = $score_user_fetch['score'];
+    switch ($type_pj) {
+        case 'image/jpeg': $ext = 1; $icon_pj = "file-image"; break;
+        case 'image/pjpeg' : $ext = 1; $icon_pj = "file-image"; break;
+        case 'image/gif' : $ext = 1; $icon_pj = "file-image"; break;
+        case 'image/png' : $ext = 1; $icon_pj = "file-image"; break; 
+        case 'image/svg+xml' : $ext = 1; $icon_pj = "file-image"; break; 
+        case 'image/tiff' : $ext = 1; $icon_pj = "file-image"; break; 
+        case 'image/webp' : $ext = 1; $icon_pj = "file-image"; break; 
+        case 'application/msword' : $ext = 2; $icon_pj = "file-word"; break; 
+        case 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' : $ext = 2; $icon_pj = "file-word"; break; 
+        case 'text/html' : $ext = 2; $icon_pj = "file-code"; break; 	
+        case 'image/x-icon' : $ext = 1; $icon_pj = "file-image"; break; 
+        case 'application/json' : $ext = 2; $icon_pj = "file-lines"; break; 
+        case 'video/mpeg' : $ext = 2; $icon_pj = "file-video"; break; 
+        case 'application/pdf' : $ext = 2; $icon_pj = "file-pdf"; break; 
+        case 'application/vnd.ms-powerpoint' : $ext = 2; $icon_pj = "file-powerpoint"; break;
+        case 'application/vnd.openxmlformats-officedocument.presentationml.presentation' : $ext = 2; $icon_pj = "file-powerpoint"; break;
+        case 'application/vnd.ms-excel' : $ext = 2; $icon_pj = "file-excel"; break;
+        case 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' : $ext = 2; $icon_pj = "file-excel"; break;
+        case 'application/zip' : $ext = 2; $icon_pj = "file-zipper"; break;
+        case 'application/xml' : $ext = 2; $icon_pj = "file"; break;
+        case 'application/x-7z-compressed' : $ext = 2; $icon_pj = "file-zipper"; break;
+        default          : $ext = 0; $icon_pj = "file"; break;
+    }
+    $piece_jointe = $url_pj == "" ? "" : "<span class=\"tag is-{$color}\">Télécharger la pièce jointe</span><a href='$url_pj' target='_blank' download><span class=\"tag is-danger\"><span class='icon'><i class='fas fa-{$icon_pj}'></i></span></span></a><br>";
+    $afficher_pj = $ext == 1 ? "<figure class='media-left'><a href='{$url_pj}' target='_blank'><p class='image is-96x96'><img src='{$url_pj}' id='publication'></p></a></figure><br><br>" : "";
+    
     return (<<<HTML
     <article class="media">
         <figure class="media-left">
-        <p class="image is-64x64">
-            <img src="{$picture}">
-        </p>
+            <a href='{$picture}' target='_blank'>
+                <p class="image is-64x64">
+                    <img src="{$picture}" style='clip-path:ellipse(39% 50%);'>
+                </p>
+            </a>
         </figure>
         <div class="media-content">
             <div class="content">
-                <p>
-                <strong>{$author}</strong>
+                <div class="tags has-addons"><span class="tag is-{$color} is-medium"><strong>@{$author}</strong></span><span class="tag is-success is-medium">{$score_user}</span></div>
                 <br>
-                {$message}
-                <br>
-                <small>{$piece_jointe}<a>Répondre</a> · {$hour}</small>
-                </p>
+                <blockquote>{$message}</blockquote>
+                {$afficher_pj}
+                <p><small>
+                <div class="tags has-addons"><br>
+                {$piece_jointe}<span class="tag is-{$color}">Date de publication</span><span class="tag is-info">{$hour}</span></div>
+                </small></p>
             </div>
         </div>
     </article>
+    <hr>
     HTML);
+}
+
+function updateScore(string $id_user){
+    $score = $_SESSION["score"] + 1;
+    sendQuery("UPDATE users SET score = '$score' WHERE id_user = '$id_user'");
+    $_SESSION['score'] = $score;
 }
 
 function sendMessage($id_user, $contenu_message, $salon_name, $url_pj){

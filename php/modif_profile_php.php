@@ -22,10 +22,14 @@ if(is_input_correct("password", $ERR)) $ERR["password"] = hasChanged("password",
 if(isset($_FILES['avatar']) && !empty($_FILES['avatar']['name'])){
 
 		switch ($_FILES['avatar']['type']) {
-			case 'image/jpeg': $ext = 'jpg'; break;
+			case 'image/jpeg': $ext = 'jpeg'; break;
             case 'image/pjpeg' : $ext = 'jpg'; break;
 			case 'image/gif' : $ext = 'gif'; break;
-			case 'image/png' : $ext = 'png'; break; 	
+			case 'image/png' : $ext = 'png'; break; 
+			case 'image/x-icon' : $ext = 'ico'; break;	
+			case 'image/svg+xml' : $ext = 'svg'; break; 
+			case 'image/tiff' : $ext = 'tiff'; break; 
+			case 'image/webp' : $ext = 'webp'; break; 
 			default          : $ext = ''; break;
 		}
 

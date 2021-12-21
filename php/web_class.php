@@ -86,13 +86,15 @@ class Web{
         HTML);
     }
 
-    public function addChat(string $salon = "Général") : void {
+    public function addChat(string $salon = "Général", string $theme) : void {
         $_SESSION["salon"] = $salon;
-        $messages = showListMessages($salon);
+        $color = $theme == "dark" ? "dark" : "light";
+        $messages = showListMessages($salon, $theme);
         $this->addToBody(<<<HTML
-          <div class="tile is-vertical is-parent" id="salon_msg">
+          <div class="tile is-parent" id="salon_msg">
             <div class="tile is-child box">
-            <p class="title">Salon : "{$salon}"</p>
+            <div class="tags has-addons"><span class="tag is-{$color} is-medium">Salon</span><span class="tag is-warning is-large">{$salon}</span></div>
+            <hr>
             {$messages}
             </div>
         </div>
@@ -100,9 +102,9 @@ class Web{
         HTML);
     }
 
-    public function addModal(string $titre, string $content, string $id) : void {
+    public function addModal(string $titre, string $content, string $id = "", string $class = "") : void {
         $this->addToBody(<<<HTML
-        <div class="modal" id="{$id}">
+        <div class="modal" id="{$id}" class="{$class}" style="z-index:100;">
             <div class="modal-background"></div>
             <div class="modal-content">
                 <header class="modal-card-head">
@@ -122,7 +124,7 @@ class Web{
     public function addCookieNotif(string $notification) : void{
         if($notification != "") {
             $this->addToBody(<<<HTML
-                <div id="notif_end" style="position: absolute; bottom: 0; right: 0px; z-index: 200;">
+                <div id="notif_end" style="position: fixed; bottom: 0; right: 0px; z-index: 200;">
                     <p>
                     {$notification}
                     </p>
@@ -143,12 +145,14 @@ class Web{
 
     public function addMenuLeft(string $theme) : void{
         $liste_salons = showListSalons();
-        $icon = $theme == "dark" ? "sun" : "moon";
+        $icon = $theme == "dark" ? "sun" : "moon";   
+        $color = $theme == "dark" ? "black" : "white";
         $this->addToBody(<<<HTML
+        <div class="control_menu" style="position: fixed; top: 10px; left: 0px; background-color: {$color}; padding: 5px; border-radius:8px;"><span class='icon is-small'> <i class='control_left_menu fas fa-angle-double-left'></i> </span></div>
         <div class="tile is-ancestor">
-        <div class="tile is-4 is-vertical is-parent">
+        <div class="tile is-4 is-vertical is-parent" id="left_menu">
             <div class="tile is-child box">
-            <p class="title">Bienvenue {$_SESSION["username"]} !</p>
+            <p class="title mt-5">Bienvenue <code>{$_SESSION["username"]}</code> !</p>
             <p class="menu-label">
                 Général
             </p>
@@ -183,6 +187,26 @@ class Web{
             </ul>
             </div>
         </div>
+        <script>
+            $("#salon_msg").addClass("is-8")
+            $(".control_left_menu").on('click', function() { 
+                if($(this).hasClass("fa-angle-double-left"))
+                {
+                    $(this).removeClass("fa-angle-double-left")
+                    $(this).addClass("fa-angle-double-right")
+                    $("#salon_msg").removeClass("is-8")
+                    $("#salon_msg").addClass("is-12")
+                }else{
+                    $(this).removeClass("fa-angle-double-right")
+                    $(this).addClass("fa-angle-double-left")
+                    $("#salon_msg").removeClass("is-12")
+                    $("#salon_msg").addClass("is-8")
+                }
+                $("#left_menu").animate({
+                    width: 'toggle'
+                });
+            });
+        </script>
         HTML);
     }
 
@@ -244,7 +268,7 @@ class Web{
                         <div class="control">
                             <div class="tags has-addons">
                             <span class="tag is-dark">Build</span>
-                            <span class="tag is-info">v2.0.0R</span>
+                            <span class="tag is-info">v4.0.0R</span>
                             </div>
                         </div>
                         </span>

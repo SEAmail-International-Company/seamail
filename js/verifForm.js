@@ -26,7 +26,7 @@ function verifForm(inputArray, urlRedirection, urlPhpFile, id){
                     $("#"+id).get(0).reset();
                     const InputFile = document.querySelector('#piece_jointe_message .file-name');
                     InputFile.textContent = "Aucun fichier uploadé";
-                    $("#salon_msg").load(location.href + " #salon_msg");
+                    $("#salon_msg").load("php/chat_php.php");
                 }else{
                     for (cle in input){
                         statebox[cle].html(res.msg[cle]);
