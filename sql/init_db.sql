@@ -65,4 +65,6 @@ CREATE TABLE messages (
     REFERENCES salons(id_salon) ON DELETE CASCADE ON UPDATE CASCADE)
     ENGINE InnoDB CHARSET utf8mb4;
 
-    INSERT INTO salons (nom_salon, date_creation_salon, icone_salon, createur_salon) VALUES ("Général", "2021-12-17", "img/salons/default.png", 1);
+    INSERT INTO users (username, profile_picture, mail, score, rang, password, date_creation_compte) VALUES ("ClaudeGodard", "img/profiles/default.png", "claude.godard@example.com", 0, "Administrateur", "6188c6eab8579cbbc37cfab16dfd26d2310a738fe9c5754e138f040e1f94003a", "2021-12-17 14:14:14");
+    INSERT INTO salons (nom_salon, date_creation_salon, icone_salon, createur_salon) VALUES ("Général", "2021-12-17 14:14:14", "img/salons/default.png", 1);
+    INSERT INTO membres_salons (id_salon, id_membre) VALUES (1, 1);

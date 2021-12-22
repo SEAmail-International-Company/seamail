@@ -8,7 +8,7 @@ if (isset($_COOKIE["notification"])){
         case 'connexion':
             $notif = "<div class=\"notification is-success\">
                 <button class=\"delete\"></button>
-                <strong>Connexion réussie</strong><br> Vous avez été correctement connecté à votre compte {$_SESSION['username']}.
+                <strong>Connexion réussie</strong><br> Vous avez été correctement connecté à votre compte @{$_SESSION['username']}.
                 <progress class=\"progress is-small is-success loading_notif\" value=\"0\" max=\"100\" style=\"position: absolute; bottom: 0; left: 2; height: 7px;\"></progress>
             </div>";
             setcookie("notification", "", strtotime('-30 days'), "/", "localhost", false, false);

@@ -259,7 +259,7 @@ function addMessage(string $picture, string $author, string $message, string $ho
         default          : $ext = 0; $icon_pj = "file"; break;
     }
     $piece_jointe = $url_pj == "" ? "" : "<span class=\"tag is-{$color}\">Télécharger la pièce jointe</span><a href='$url_pj' target='_blank' download><span class=\"tag is-danger\"><span class='icon'><i class='fas fa-{$icon_pj}'></i></span></span></a><br>";
-    $afficher_pj = $ext == 1 ? "<figure class='media-left'><a href='{$url_pj}' target='_blank'><p class='image is-96x96'><img src='{$url_pj}' id='publication'></p></a></figure>" : "";
+    $afficher_pj = $ext == 1 ? "<figure class='media-left'><p class='image is-96x96'><a href='{$url_pj}' target='_blank'><img src='{$url_pj}' id='publication'></a></p></figure>" : "";
     $bouton_supp = $_SESSION["rang"] == "Administrateur" || $author == $_SESSION['username'] ? "<a href='php/delete_msg.php?id={$id_msg}' class='button is-small is-danger'>Supprimer ce message</a>" : "";
     return (<<<HTML
     <article class="media">
@@ -274,8 +274,8 @@ function addMessage(string $picture, string $author, string $message, string $ho
             <div class="content">
                 <div class="tags has-addons"><span class="tag is-{$color} is-medium"><strong>@{$author}</strong></span><span class="tag is-success is-medium">{$score_user}</span></div>
                 <br>
-                <blockquote>{$message}</blockquote>
-                {$afficher_pj}
+                <blockquote>{$message}<br>
+                {$afficher_pj}</blockquote>
                 <p><small>
                 <div class="tags has-addons"><br>
                 {$piece_jointe}<span class="tag is-{$color}">Date de publication</span><span class="tag is-info">{$hour}</span></div>
@@ -328,3 +328,40 @@ function delete_msg(int $id_msg, int $id_pj, bool $is_pj_exists, string $url_pj 
         @unlink("../".$url_pj);
     }
 }
+
+function is_available_nom_salon(string $nom_salon) : int{
+    $req = sendQuery("SELECT * FROM salons WHERE nom_salon = '$nom_salon'");
+
+    $ERR_nom_salon = $req->rowCount() == 0 ? 0 : -16;
+
+    return $ERR_nom_salon;
+}
+
+function addSalon(string $id_createur, string $nom_salon, string $logo_salon) : void{
+    $date_creation_salon = date("Y-m-d H:i:s");
+
+    if($logo_salon == "") $logo_salon = "img/salons/default.png";
+
+    do { 
+        $id_salon = random_int(1, 9999);
+        $req_salon = sendQuery("SELECT * FROM salons WHERE id_salon = '$id_salon'");
+        $if_id_salon_exists = $req_salon->rowCount();
+    }while($if_id_salon_exists != 0);
+
+    sendQuery("INSERT INTO salons (id_salon, nom_salon, date_creation_salon, icone_salon, createur_salon) VALUES ('$id_salon', '$nom_salon', '$date_creation_salon', '$logo_salon', '$id_createur')");
+    sendQuery("INSERT INTO membres_salons (id_salon, id_membre) VALUES ('$id_salon', '$id_createur')");
+}
+
+function string2url($chaine) { 
+    $chaine = trim($chaine); 
+    $chaine = strtr($chaine, 
+   "ÀÁÂÃÄÅàáâãäåÒÓÔÕÖØòóôõöøÈÉÊËèéêëÇçÌÍÎÏìíîïÙÚÛÜùúûüÿÑñ", 
+   "aaaaaaaaaaaaooooooooooooeeeeeeeecciiiiiiiiuuuuuuuuynn"); 
+    $chaine = strtr($chaine,"ABCDEFGHIJKLMNOPQRSTUVWXYZ","abcdefghijklmnopqrstuvwxyz"); 
+    $chaine = preg_replace('#([^.a-z0-9]+)#i', '_', $chaine); 
+    $chaine = preg_replace('#-{2,}#','_',$chaine); 
+    $chaine = preg_replace("# #",'_',$chaine); 
+    $chaine = preg_replace('#-$#','',$chaine); 
+    $chaine = preg_replace('#^-#','',$chaine); 
+    return $chaine; 
+   }

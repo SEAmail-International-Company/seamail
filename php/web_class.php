@@ -195,7 +195,7 @@ class Web{
             <ul class="menu-list">
                 <li>
                 {$liste_salons}
-                <a id="create_salon"><i class="fas fa-plus-circle"></i> | Créer un salon</a>
+                <a id="create_salon"><i class="fas fa-plus-circle"></i> | Créer un salon&nbsp;&nbsp;<div class='tag is-warning'>Fonctionnalité expérimentale</div></a>
                 </li>
             </ul>
             <p class="menu-label">
@@ -296,7 +296,7 @@ class Web{
                         <div class="control">
                             <div class="tags has-addons">
                             <span class="tag is-dark">Build</span>
-                            <span class="tag is-info">v4.2.0R</span>
+                            <span class="tag is-info">v5.0.0</span>
                             </div>
                         </div>
                         </span>

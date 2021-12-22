@@ -18,4 +18,5 @@ $ERR_DEFINE[-12] = "Fichier trop lourd.";
 $ERR_DEFINE[-13] = "Erreur d'importation.";
 $ERR_DEFINE[-14] = "Il n'existe que 2 rangs : Administrateur ou Membre.";
 $ERR_DEFINE[-15] = "Le score ne peut pas être négatif.";
+$ERR_DEFINE[-16] = "Ce nom de salon est déjà utilisé.";
 $success = false;
