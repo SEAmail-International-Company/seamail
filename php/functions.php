@@ -211,7 +211,7 @@ function showResumeProfile(){
     return "<div class=\"media\">
     <div class=\"media-left\">
       <figure class=\"image is-96x96\">
-        <a href=\"{$_SESSION['profile_picture']}\" target='_blank' title=\"Ouvrir l'image dans un nouvel onglet\"><img src=\"{$_SESSION['profile_picture']}\" alt=\"Profile picture\" style='clip-path:ellipse(50% 50%);'></a>
+        <a href=\"{$_SESSION['profile_picture']}\" target='_blank' title=\"Ouvrir l'image dans un nouvel onglet\"><img class=\"is-rounded\" src=\"{$_SESSION['profile_picture']}\" alt=\"Profile picture\"></a>
       </figure>
     </div>
     <div class=\"media-content\">
@@ -266,7 +266,7 @@ function addMessage(string $picture, string $author, string $message, string $ho
         <figure class="media-left">
             <a href='{$picture}' target='_blank'>
                 <p class="image is-64x64">
-                    <img src="{$picture}" style='clip-path:ellipse(50% 50%);'>
+                    <img src="{$picture}" class="is-rounded">
                 </p>
             </a>
         </figure>
