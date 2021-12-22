@@ -27,17 +27,11 @@ $mail_field = new Field("", false, false, true, "Adresse mail", [$mail_input->cr
 $password_input = new Input("input", "", "password", "password", "password", "input", "Mot de passe", "", "", true, false, true, false, true, "lock", false, "", true);
 $password_field = new Field("", false, false, true, "Mot de passe", [$password_input->createInput()]);
 
-$rang_input = new Input("input", "", "text", "rang", "rang", "input", "Rang", $_SESSION['rang'], "", true, true, true, true, true, "hat-wizard", false, "", true);
-$rang_field = new Field("", false, false, true, "Rang", [$rang_input->createInput()]);
-
-$score_input = new Input("input", "", "text", "score", "score", "input", "Score", $_SESSION['score'], "", true, true, true, true, true, "trophy", false, "", true);
-$score_field = new Field("", false, false, true, "Score", [$score_input->createInput()]);
-
 $submit_input = new Input("input", "", "submit", "modifier", "modifier", "button is-dark", "", "Modifier");
 $close_input = new Input("input", "", "button", "fermer_modif", "fermer_modif", "button is-light close_modal_modif_account", "", "Fermer");
 $bottom_field = new Field("", true, false, false, "", [$submit_input->createInput(), $close_input->createInput()]);
 
-$form_obj = new Form("POST", "modifAccountForm", [$avatar_field->createField(), $username_field->createField(), $mail_field->createField(), $password_field->createField(), $rang_field->createField(), $score_field->createField(), $bottom_field->createField()], true);
+$form_obj = new Form("POST", "modifAccountForm", [$avatar_field->createField(), $username_field->createField(), $mail_field->createField(), $password_field->createField(), $bottom_field->createField()], true);
 $form = $form_obj->createForm();
 $web->addModal("Modifier mon compte", $profile_picture.$form, "modal_modif_account");
 
@@ -67,10 +61,11 @@ $form_obj_create_message = new Form("POST", "createmessageForm", [$message_field
 $form_create_message = $form_obj_create_message->createForm();
 
 $web->addModal("Créer un nouveau salon", $form_create_salon, "modal_create_salon");
+$web->addModal("Membres du salon", "Membres", "modal_membres_salons");
 
 $web->addToBody(<<<HTML
-<section class="hero" style="bottom: 0 !important; position:fixed !important; width: 100%; height: 0px; z-index:99;">
-  <div class="hero-body" style="margin-top: -90px !important; background:{$color}; height: 20px; padding-top:0 !important;">
+<section class="hero" style="bottom: 0 !important; position:fixed !important; min-width: 100%; height: 0px; z-index:99;">
+  <div class="hero-body" style="margin-top: -90px !important; background:{$color}; height: 20px; padding-top:0 !important; padding-right:100px; padding-left:80px; ">
   {$form_create_message}
   </div>  
 </section>
@@ -116,6 +111,13 @@ $web->addToBody(<<<HTML
 	},1000)
       
 </script>
+<style>
+    body{
+        min-height: 100vh;
+        background: url("img/ocean_5.jpg");
+        background-size: cover;
+    }
+</style>
 HTML);
 
 echo $web->toHTML($theme);

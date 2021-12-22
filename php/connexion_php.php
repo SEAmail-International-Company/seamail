@@ -9,7 +9,7 @@ $ERR["password"] = is_empty("password");
 $username = htmlspecialchars($_POST["username"]);
 $password = htmlspecialchars($_POST["password"]);
 
-//if(is_input_correct("password", $ERR)) $ERR["password"] = is_correct_password($password);
+if(is_input_correct("password", $ERR)) $ERR["password"] = is_correct_password($password);
 if(is_input_correct("username", $ERR)) $ERR["username"] = is_username_exist($username);
 if(is_input_correct("password", $ERR)) $ERR["password"] = is_password_match($username, $password);
 

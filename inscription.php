@@ -20,12 +20,12 @@ $username_field = new Field("", false, false, true, "Nom d'utilisateur", [$usern
 $mail_input = new Input("input", "", "mail", "mail", "mail", "input", "Adresse mail", "", "", true, false, true, false, true, "envelope", false, "", true);
 $mail_field = new Field("", false, false, true, "Adresse mail", [$mail_input->createInput()]);
 
-$helpbox_content_password = "Doit contenir plus de 12 caractères parmis lesquels au moins une majuscule, une minuscule, un caractère spécial (!@#$%^&*) et un chiffre.";
-$password_input = new Input("input", "", "password", "password", "password", "input", "Mot de passe", "", "", true, false, true, false, true, "lock", false, $helpbox_content_password, true);
+$helpbox_content_password = "<strong>Doit contenir plus de 12 caractères parmis lesquels au moins une majuscule, une minuscule, un caractère spécial (!@#$%^&*) et un chiffre.</strong>";
+$password_input = new Input("input", "", "password", "password", "password", "input", "Mot de passe", "", "", true, false, true, false, true, "lock", false, "", true, $helpbox_content_password);
 $password_field = new Field("", false, false, true, "Mot de passe", [$password_input->createInput()]);
 
 $submit_input = new Input("input", "", "submit", "inscription", "inscription", "button is-info", "Inscription");
-$a_link = new Input("a", "", "", "", "", "button is-info is-outlined", "", "Déjà membre ?", "connexion.php");
+$a_link = new Input("a", "", "", "", "", "button is-info is-inverted", "", "Déjà membre ?", "connexion.php");
 $bottom_field = new Field("", true, false, false, "", [$submit_input->createInput(), $a_link->createInput()]);
 
 $form_obj = new Form("POST", "registerForm", [$username_field->createField(), $mail_field->createField(), $password_field->createField(), $bottom_field->createField()]);
@@ -41,6 +41,14 @@ $web->addToBody(<<<HTML
         verifForm(["username", "password", "mail"], "connexion.php", "php/inscription_php.php", "registerForm");
      });
 </script>
+
+<style>
+    body{
+        min-height: 100vh;
+        background: url("img/ocean_1.jpg");
+        background-size: cover;
+    }
+</style>
 HTML);
 
 echo $web->toHTML($theme);

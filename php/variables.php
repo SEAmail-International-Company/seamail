@@ -16,4 +16,6 @@ $ERR_DEFINE[-10] = "Aucun fichier sélectionné.";
 $ERR_DEFINE[-11] = "Format non pris en charge.";
 $ERR_DEFINE[-12] = "Fichier trop lourd.";
 $ERR_DEFINE[-13] = "Erreur d'importation.";
+$ERR_DEFINE[-14] = "Il n'existe que 2 rangs : Administrateur ou Membre.";
+$ERR_DEFINE[-15] = "Le score ne peut pas être négatif.";
 $success = false;

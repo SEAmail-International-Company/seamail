@@ -15,13 +15,15 @@ function sendQuery($query){
 
 }
 
-function updateUserProfile($username, $mail, $password, $profile_picture){
+function updateUserProfile($username, $mail, $password, $profile_picture, string $rang = "", int $score = -1){
     if($password != "") $password = hash("sha256", $password);
     $id = $_SESSION['id'];
     if($password != "") sendQuery("UPDATE users SET password = '$password' WHERE id_user = '$id'");
     if($username != "") sendQuery("UPDATE users SET username = '$username' WHERE id_user = '$id'");
     if($mail != "") sendQuery("UPDATE users SET mail = '$mail' WHERE id_user = '$id'");
     if($profile_picture != "") sendQuery("UPDATE users SET profile_picture = '$profile_picture' WHERE id_user = '$id'");
+    if($rang != "") sendQuery("UPDATE users SET rang = '$rang' WHERE id_user = '$id'");
+    if($score != -1) sendQuery("UPDATE users SET score = '$score' WHERE id_user = '$id'");
 }
 
 function hasChanged($var_type, $var_value, $id){
@@ -34,43 +36,43 @@ function hasChanged($var_type, $var_value, $id){
     return $ERR;
 }
 
-function is_empty($var){
+function is_empty($var) : int{
     $ERR = [];
     $ERR[$var] = !empty($_POST[$var]) ? 0 : -1;
 
     return $ERR[$var];
 }
 
-function is_correct_password($password){
+function is_correct_password(string $password) : int{
     $ERR = [];
     $ERR["password"] = preg_match("/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{12,})/i", $password) ? 0 : -2;
 
     return $ERR["password"];
 }
 
-function is_correct_mail($mail){
+function is_correct_mail(string $mail) : int{
     $ERR = [];
     $ERR["mail"] = filter_var($mail, FILTER_VALIDATE_EMAIL) ? 0 : -5;
 
     return $ERR["mail"];
 }
 
-function are_all_input_correct($array){
+function are_all_input_correct(array $array) : bool{
     if (array_sum($array) == 0) return true;
     else return false;
 }
 
-function is_one_input_correct($array){
+function is_one_input_correct(array $array) : bool{
     $success = array_search(0, $array) != "" ? true : false;
     return $success;
 }
 
-function is_input_correct($value, $array){
+function is_input_correct(string $value, array $array) : bool{
     if ($array[$value] == 0) return true;
     else return false;
 }
 
-function is_username_available($username){
+function is_username_available(string $username) : int{
     $username_verify = sendQuery("SELECT * FROM users WHERE username = '$username'");
 
     $ERR = [];
@@ -79,7 +81,7 @@ function is_username_available($username){
     return $ERR["username"];
 }
 
-function is_username_exist($username){
+function is_username_exist(string $username) : int{
     $req = sendQuery("SELECT * FROM users WHERE username = '$username'");
 
     $ERR = [];
@@ -88,7 +90,7 @@ function is_username_exist($username){
     return $ERR["username"];
 }
 
-function setUserVar($username){
+function setUserVar(string $username) : void{
     $req = sendQuery("SELECT * FROM users WHERE username = '$username'");
 
     $req = $req->fetch();
@@ -102,7 +104,7 @@ function setUserVar($username){
     $_SESSION["date_creation_compte"] = formatTimeStamp($req["date_creation_compte"]);
 }
 
-function is_password_match($username, $password){
+function is_password_match(string $username, string $password) : int{
     $req = sendQuery("SELECT * FROM users WHERE username = '$username'");
 
     $req = $req->fetch();
@@ -114,7 +116,7 @@ function is_password_match($username, $password){
     return $ERR["password"];
 }
 
-function is_mail_available($mail){
+function is_mail_available(string $mail) : int{
     $req = sendQuery("SELECT * FROM users WHERE mail = '$mail'");
 
     $ERR = [];
@@ -209,12 +211,12 @@ function showResumeProfile(){
     return "<div class=\"media\">
     <div class=\"media-left\">
       <figure class=\"image is-96x96\">
-        <a href=\"{$_SESSION['profile_picture']}\" target='_blank' title=\"Ouvrir l'image dans un nouvel onglet\"><img src=\"{$_SESSION['profile_picture']}\" alt=\"Profile picture\" style='clip-path:ellipse(39% 50%);'></a>
+        <a href=\"{$_SESSION['profile_picture']}\" target='_blank' title=\"Ouvrir l'image dans un nouvel onglet\"><img src=\"{$_SESSION['profile_picture']}\" alt=\"Profile picture\" style='clip-path:ellipse(50% 50%);'></a>
       </figure>
     </div>
     <div class=\"media-content\">
-      <p class=\"title is-5\">@{$_SESSION['username']}</p>
-      <p class=\"subtitle is-6\">Compte créé {$_SESSION['date_creation_compte']}</p>
+    <div class=\"tags has-addons\"><span class=\"tag is-link is-medium\">@{$_SESSION['username']}</span><span class=\"tag is-warning is-medium\">{$_SESSION['rang']}</span><span class=\"tag is-primary is-medium\">{$_SESSION['score']}</span></div>
+    <div class=\"tags has-addons\"><span class=\"tag is-light is-small\">Compte créé {$_SESSION['date_creation_compte']}</span></div>
     </div>
     </div>";
 }
@@ -226,7 +228,7 @@ function add_user_in_salon(string $username, int $id_salon){
     sendQuery("INSERT INTO membres_salons (id_salon, id_membre) VALUES ('$id_salon', '$id_user')");
 }
 
-function addMessage(string $picture, string $author, string $message, string $hour, string $url_pj = "", string $theme) : string{
+function addMessage(string $picture, string $author, string $message, string $hour, string $url_pj = "", string $theme, string $id_msg) : string{
     $color = $theme == "dark" ? "dark" : "light"; 
     $type_pj =  $url_pj == "" ? "" : mime_content_type("../" . $url_pj);
      $req = sendQuery("SELECT score FROM users WHERE username = '$author'");
@@ -257,14 +259,14 @@ function addMessage(string $picture, string $author, string $message, string $ho
         default          : $ext = 0; $icon_pj = "file"; break;
     }
     $piece_jointe = $url_pj == "" ? "" : "<span class=\"tag is-{$color}\">Télécharger la pièce jointe</span><a href='$url_pj' target='_blank' download><span class=\"tag is-danger\"><span class='icon'><i class='fas fa-{$icon_pj}'></i></span></span></a><br>";
-    $afficher_pj = $ext == 1 ? "<figure class='media-left'><a href='{$url_pj}' target='_blank'><p class='image is-96x96'><img src='{$url_pj}' id='publication'></p></a></figure><br><br>" : "";
-    
+    $afficher_pj = $ext == 1 ? "<figure class='media-left'><a href='{$url_pj}' target='_blank'><p class='image is-96x96'><img src='{$url_pj}' id='publication'></p></a></figure>" : "";
+    $bouton_supp = $_SESSION["rang"] == "Administrateur" || $author == $_SESSION['username'] ? "<a href='php/delete_msg.php?id={$id_msg}' class='button is-small is-danger'>Supprimer ce message</a>" : "";
     return (<<<HTML
     <article class="media">
         <figure class="media-left">
             <a href='{$picture}' target='_blank'>
                 <p class="image is-64x64">
-                    <img src="{$picture}" style='clip-path:ellipse(39% 50%);'>
+                    <img src="{$picture}" style='clip-path:ellipse(50% 50%);'>
                 </p>
             </a>
         </figure>
@@ -277,6 +279,7 @@ function addMessage(string $picture, string $author, string $message, string $ho
                 <p><small>
                 <div class="tags has-addons"><br>
                 {$piece_jointe}<span class="tag is-{$color}">Date de publication</span><span class="tag is-info">{$hour}</span></div>
+                {$bouton_supp}
                 </small></p>
             </div>
         </div>
@@ -294,7 +297,7 @@ function updateScore(string $id_user){
 function sendMessage($id_user, $contenu_message, $salon_name, $url_pj){
     $date_publication = date("Y-m-d H:i:s");
     do { 
-        $id_pj = random_int(1, 999);
+        $id_pj = random_int(1, 9999);
         $req = sendQuery("SELECT * FROM piecesjointes WHERE id_piece_jointe = '$id_pj'");
         $if_id_pj_exists = $req->rowCount();
     }while($if_id_pj_exists != 0);
@@ -306,7 +309,7 @@ function sendMessage($id_user, $contenu_message, $salon_name, $url_pj){
     sendQuery("INSERT INTO piecesjointes (id_piece_jointe, lien_piece_jointe) VALUES ('$id_pj', '$url_pj')");
 
     do { 
-        $id_msg = random_int(1, 999);
+        $id_msg = random_int(1, 9999);
         $req_msg = sendQuery("SELECT * FROM messages WHERE id_message = '$id_msg'");
         $if_id_msg_exists = $req_msg->rowCount();
     }while($if_id_msg_exists != 0);
@@ -314,4 +317,14 @@ function sendMessage($id_user, $contenu_message, $salon_name, $url_pj){
     sendQuery("INSERT INTO messages (id_message, id_auteur, id_piece_jointe, contenu, date_publication) VALUES ('$id_msg', '$id_user', '$id_pj', '$contenu_message', '$date_publication')");
     sendQuery("INSERT INTO messages_salons (id_salon, id_message) VALUES ('$id_salon', '$id_msg')");
 
+}
+
+function delete_msg(int $id_msg, int $id_pj, bool $is_pj_exists, string $url_pj = "") : void{
+    sendQuery("DELETE FROM piecesjointes WHERE id_piece_jointe = '$id_pj'");
+    sendQuery("DELETE FROM messages WHERE id_message = '$id_msg'");
+    sendQuery("DELETE FROM messages_salons WHERE id_message = '$id_msg'");
+
+    if($is_pj_exists){
+        @unlink("../".$url_pj);
+    }
 }

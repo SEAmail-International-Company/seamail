@@ -20,7 +20,7 @@ if(is_input_correct("mail", $ERR)) $ERR["mail"] = is_mail_available($mail);
 
 if (are_all_input_correct($ERR)) {
     $score = 0;
-    $rang = "user";
+    $rang = "Membre";
     $date_creation_compte = date("Y-m-d H:i:s");
     $profile_picture = "img/profiles/default.png";
 

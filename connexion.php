@@ -10,7 +10,7 @@ if(isset($_SESSION["username"]) && !empty($_SESSION["username"])) {
 
 $web = new Web("SEAmail - Connexion");
 $web->addNavBar($theme);
-$web->addSection("Formulaire de connexion", "Veuillez compléter le formulaire ci-dessous pour vous connecter à votre compte SEAmail.");
+$web->addSection("Formulaire de connexion", "<strong>Veuillez compléter le formulaire ci-dessous pour vous connecter à votre compte SEAmail.</strong>");
 $web->addJSlink("js/changeInputStatus.js");
 $web->addJSlink("js/verifForm.js");
 $web->addLoader($theme);
@@ -19,12 +19,12 @@ $web->addCookieNotif($notif);
 $username_input = new Input("input", "", "text", "username", "username", "input", "Nom d'utilisateur", "", "", true, false, true, false, true, "user", false, "", true);
 $username_field = new Field("", false, false, true, "Nom d'utilisateur", [$username_input->createInput()]);
 
-$helpbox_content_password = "Doit contenir plus de 12 caractères parmis lesquels au moins une majuscule, une minuscule, un caractère spécial (!@#$%^&*) et un chiffre.";
-$password_input = new Input("input", "", "password", "password", "password", "input", "Mot de passe", "", "", true, false, true, false, true, "lock", false, $helpbox_content_password, true);
+$helpbox_content_password = "<strong>Doit contenir plus de 12 caractères parmis lesquels au moins une majuscule, une minuscule, un caractère spécial (!@#$%^&*) et un chiffre.</strong>";
+$password_input = new Input("input", "", "password", "password", "password", "input", "Mot de passe", "", "", true, false, true, false, true, "lock", false, "", true, $helpbox_content_password);
 $password_field = new Field("", false, false, true, "Mot de passe", [$password_input->createInput()]);
 
 $submit_input = new Input("input", "", "submit", "connexion", "connexion", "button is-info", "Connexion");
-$a_link = new Input("a", "", "", "", "", "button is-info is-outlined", "", "Pas encore membre ?", "inscription.php");
+$a_link = new Input("a", "", "", "", "", "button is-info is-inverted", "", "Pas encore membre ?", "inscription.php");
 $bottom_field = new Field("", true, false, false, "", [$submit_input->createInput(), $a_link->createInput()]);
 
 $form_obj = new Form("POST", "loginForm", [$username_field->createField(), $password_field->createField(), $bottom_field->createField()]);
@@ -40,6 +40,14 @@ $web->addToBody(<<<HTML
         verifForm(["username", "password"], "espace_membre.php", "php/connexion_php.php", "loginForm");
      });
 </script>
+
+<style>
+    body{
+        min-height: 100vh;
+        background: url("img/ocean_2.jpg");
+        background-size: cover;
+    }
+</style>
 HTML);
 
 echo $web->toHTML($theme);

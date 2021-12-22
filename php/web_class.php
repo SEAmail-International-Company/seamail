@@ -66,40 +66,53 @@ class Web{
         $color_background = $theme == "dark" ? "black" : "white";
         $this->addToBody(<<<HTML
             <div id="loader" 
-            style="z-index: 99; position: absolute; top: 0; left: 0; height: 100%; width: 100%; background-color: {$color_background};">
+            style="z-index: 99; position: absolute; top: 0; left: 0; height: 100%; width: 100%; background-color: {$color_background}; background: url('img/ocean_4.jpg'); background-size: cover;">
             <section class="section is-{$theme} is-large">
                 <p class="title is-4">
                     Chargement en cours...
                 </p><br>
                 <p class="subtitle">
-                    <progress class="progress is-{$theme} is-small" max="100"></progress>
+                <progress class="progress is-large is-link" id="loading" value="0" max="100"></progress>
                 </p>
             </section>
             </div>
             <script>
             $(window).ready(function() {
-                setTimeout(function() {
-                $("#loader").fadeOut("slow");
-                }, 600);       
+                var loaderBar = $('#loading'),
+                max = loaderBar.attr('max'),
+                time = 7, 
+                value = loaderBar.val();
+                var Telechargement = function() {
+                    value += 1;
+                    addValue = loaderBar.val(value);
+                };
+                var animation = setInterval(function() {
+                    Telechargement();
+                }, time);
+                  setTimeout(function() {
+                    $("#loader").fadeOut("slow");
+                }, 1500);       
             });
             </script>
         HTML);
     }
 
-    public function addChat(string $salon = "Général", string $theme) : void {
+    public function addChat(string $salon = "Général", string $theme) {
         $_SESSION["salon"] = $salon;
         $color = $theme == "dark" ? "dark" : "light";
         $messages = showListMessages($salon, $theme);
         $this->addToBody(<<<HTML
-          <div class="tile is-parent" id="salon_msg">
-            <div class="tile is-child box">
-            <div class="tags has-addons"><span class="tag is-{$color} is-medium">Salon</span><span class="tag is-warning is-large">{$salon}</span></div>
+          <div class="tile is-parent is-12" id="salon_msg">
+            <div class="tile is-child box" id="child_salon_msg">
+            <div class="tags has-addons"><span class="tag is-{$color} is-medium">Salon</span><span class="tag is-warning is-large">{$salon}</span>&nbsp;&nbsp;<span class="tag is-{$color} is-medium">Messages</span><span class="tag is-link is-medium">{$messages[1]}</span>&nbsp;&nbsp;<span class="tag is-{$color} is-medium show_membres_salon">Membres</span><span class="tag is-primary is-medium">{$messages[2]}</span></div>
             <hr>
-            {$messages}
+            {$messages[0]}
             </div>
         </div>
         </div>
         HTML);
+
+        return $messages[3];
     }
 
     public function addModal(string $titre, string $content, string $id = "", string $class = "") : void {
@@ -130,14 +143,29 @@ class Web{
                     </p>
                 </div>
             <script>
+                $(window).ready(function() {
+                var loaderBarNotif = $('.loading_notif'),
+                max = loaderBarNotif.attr('max'),
+                time = 20, 
+                value = loaderBarNotif.val();
+                var Telechargement = function() {
+                    value += 1;
+                    addValue = loaderBarNotif.val(value);
+                };
+                var animation = setInterval(function() {
+                    Telechargement();
+                }, time);   
+                
+                
                 $("#notif_end").hide();
                 $("#notif_end").fadeIn(200);
                 setTimeout(function() {
                     $("#notif_end").fadeOut(400);
-                }, 4000);
+                }, 3000);
                 $(".delete").click(function() {
                     $("#notif_end").fadeOut(400);
                 });
+            });
             </script>
             HTML);
         }
@@ -150,7 +178,7 @@ class Web{
         $this->addToBody(<<<HTML
         <div class="control_menu" style="position: fixed; top: 10px; left: 0px; background-color: {$color}; padding: 5px; border-radius:8px;"><span class='icon is-small'> <i class='control_left_menu fas fa-angle-double-left'></i> </span></div>
         <div class="tile is-ancestor">
-        <div class="tile is-4 is-vertical is-parent" id="left_menu">
+        <div class="tile is-4 is-parent" id="left_menu">
             <div class="tile is-child box">
             <p class="title mt-5">Bienvenue <code>{$_SESSION["username"]}</code> !</p>
             <p class="menu-label">
@@ -268,7 +296,7 @@ class Web{
                         <div class="control">
                             <div class="tags has-addons">
                             <span class="tag is-dark">Build</span>
-                            <span class="tag is-info">v4.0.0R</span>
+                            <span class="tag is-info">v4.2.0R</span>
                             </div>
                         </div>
                         </span>
