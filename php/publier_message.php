@@ -6,7 +6,7 @@ date_default_timezone_set("Europe/Paris");
 $ERR["message"] = is_empty("message");
 $ERR["pj"] = -1;
 
-$message = htmlspecialchars($_POST["message"]);
+$message = addslashes(htmlspecialchars($_POST["message"]));
 
 if(isset($_FILES['piece_jointe_message']) && !empty($_FILES['piece_jointe_message']['name'])){
 

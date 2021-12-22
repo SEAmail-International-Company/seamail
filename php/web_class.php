@@ -180,7 +180,7 @@ class Web{
         <div class="tile is-ancestor">
         <div class="tile is-4 is-parent" id="left_menu">
             <div class="tile is-child box">
-            <p class="title mt-5">Bienvenue <code>{$_SESSION["username"]}</code> !</p>
+            <p class="title is-4 mt-5">Bienvenue <code>{$_SESSION["username"]}</code> !</p>
             <p class="menu-label">
                 Général
             </p>
